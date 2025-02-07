@@ -21,9 +21,21 @@
 #include <string.h>
 #include <stdio.h>
 
+FEHServo servo(FEHServo::Servo7); // declare servo arm
+
 int main(void)
 {
-    LCD.Clear(BLACK);
-    LCD.WriteLine("Hello, World!");
-	return 0;
+    /*
+    // declare light sensor input pin
+    AnalogInputPin CdS_cell(FEHIO::P2_0);
+
+    // print value of light sensor to screen
+    while (1) {
+        LCD.Write(CdS_cell.Value());
+        Sleep(300);
+        LCD.Clear();
+    }
+    */
+
+    servo.TouchCalibrate();
 }
