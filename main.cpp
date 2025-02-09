@@ -61,8 +61,6 @@ int main(void)
     DigitalInputPin backRightBumper(FEHIO::P0_2);
     DigitalInputPin backLeftBumper(FEHIO::P0_3);
 
-    //tracks how many turns the robot has made
-    int turnTracker = 0;
     //assign boolean values for bumpers
     bool frontRightBumpValue = frontRightBumper.Value();
     bool frontLeftBumpValue = frontLeftBumper.Value();
@@ -88,40 +86,41 @@ int main(void)
         //loop iterates 3 times for three turns
         for (int i = 0; i < 3; i++)
         {
-            //robot moves forward
+            //robot moves forward until the front bumpers both hit the wall
+            while (frontRightBumpValue != 0 && frontLeftBumpValue != 0) {
             rightMotor.SetPercent(25);
             leftMotor.SetPercent(25);
-        
-        //when both front bumpers are pressed
-        if (frontRightBumpValue == 0 && frontLeftBumpValue == 0)
-        {
-            //both wheels stop for one second
-            rightMotor.SetPercent(0);
-            leftMotor.SetPercent(0);
-            Sleep (1.0);
-            //robot moves backwards
-            rightMotor.SetPercent(-10);
-            leftMotor.SetPercent(-10);
-            Sleep (.5);
-            //.
-
-            //when the amount of turns the robot has made is even, it turns right
-            if (turnTracker % 2 == 0)
-            {
-            rightMotor.SetPercent(-10);
-            leftMotor.SetPercent(10);
-            Sleep (1.0);
-            }
-            //when the amount of turns the robot has made is odd, it turns left
-            else if (turnTracker % 2 != 0)
-            {
-            rightMotor.SetPercent(10);
-            leftMotor.SetPercent(-10);
-            Sleep (1.0);
-            }
-            //increment turn amount
-            turnTracker++;
         }
+        
+        //when both front bumpers are pressed both wheels stop for one second
+        rightMotor.SetPercent(0);
+        leftMotor.SetPercent(0);
+        Sleep (1.0);
+        //robot moves backwards
+        rightMotor.SetPercent(-10);
+        leftMotor.SetPercent(-10);
+        Sleep (.5);
+
+        //tracks how many turns the robot has made
+        int turnTracker = 0;
+
+        //when the amount of turns the robot has made is even, it turns right
+        if (turnTracker % 2 == 0)
+        {
+        rightMotor.SetPercent(-10);
+        leftMotor.SetPercent(10);
+        Sleep (1.0);
+        }
+        //when the amount of turns the robot has made is odd, it turns left
+        else if (turnTracker % 2 != 0)
+        {
+        rightMotor.SetPercent(10);
+        leftMotor.SetPercent(-10);
+        Sleep (1.0);
+        }
+        //increment turn amount
+        turnTracker++;
+
         //robot moves backwards until both back bumpers are pressed
         while (backRightBumpValue != 0 && backLeftBumpValue != 0)
         {
