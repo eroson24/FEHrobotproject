@@ -67,22 +67,7 @@ int main(void)
     bool backRightBumpValue = backRightBumper.Value();
     bool backLeftBumpValue = backLeftBumper.Value();
 
-    //Screen is 319 pixels from left to right (x-value)
-    //Screen is 239 pixels from top to bottom (y-value)
-    LCD.Clear(BLUE);
-    LCD.SetFontColor(WHITE);
-    LCD.DrawRectangle(117,120,102,35);
-    LCD.WriteAt("Start",87.5,130);
-
-    //values represent location of touch on proteus screen
-    int x_pos, y_pos;
-    //waits for user touch
-    while (!LCD.Touch(&x_pos,&y_pos)) {
-    LCD.Touch(&x_pos,&y_pos);
-
-    //if the user hits the Start button
-    if (x_pos >= 117 && x_pos <= 219 && y_pos >= 102 && y_pos <= 137)
-    {
+    Sleep(3.0);
         //loop iterates 3 times for three turns
         for (int i = 0; i < 3; i++)
         {
@@ -127,7 +112,5 @@ int main(void)
         rightMotor.SetPercent(-10);
         leftMotor.SetPercent(-10);
         }
-        }
     }
-}
 }
