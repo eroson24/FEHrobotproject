@@ -77,7 +77,7 @@ int main(void)
     //values represent location of touch on proteus screen
     int x_pos, y_pos;
     //waits for user touch
-    while (!LCD.Touch(&x_pos,&y_pos)) {}
+    while (!LCD.Touch(&x_pos,&y_pos)) {
     LCD.Touch(&x_pos,&y_pos);
 
     //if the user hits the Start button
@@ -129,4 +129,5 @@ int main(void)
         }
         }
     }
+}
 }
