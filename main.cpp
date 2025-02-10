@@ -77,14 +77,17 @@ int main(void)
             leftMotor.SetPercent(25);
         }
         
-        //when both front bumpers are pressed both wheels stop for one second
-        rightMotor.SetPercent(0);
-        leftMotor.SetPercent(0);
-        Sleep (1.0);
-        //robot moves backwards
-        rightMotor.SetPercent(-10);
-        leftMotor.SetPercent(-10);
-        Sleep (.5);
+        if (frontRightBumpValue == 0 && frontLeftBumpValue == 0)
+        {
+            //both wheels stop for one second
+            rightMotor.SetPercent(0);
+            leftMotor.SetPercent(0);
+            Sleep (1.0);
+            //robot moves backwards
+            rightMotor.SetPercent(-10);
+            leftMotor.SetPercent(-10);
+            Sleep (.5);
+        }
 
         //tracks how many turns the robot has made
         int turnTracker = 0;
