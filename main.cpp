@@ -34,8 +34,6 @@ DigitalInputPin backLeftBumper(FEHIO::P0_3);
 FEHMotor rightMotor(FEHMotor::Motor0,9.0);
 FEHMotor leftMotor(FEHMotor::Motor1,9.0);
 
-
-
 int main(void)
 {
     /*
@@ -53,68 +51,88 @@ int main(void)
     servo.TouchCalibrate();
     */
 
-    //assign boolean values for bumpers
-    bool frontRightBumpValue = frontRightBumper.Value();
-    bool frontLeftBumpValue = frontLeftBumper.Value();
-    bool backRightBumpValue = backRightBumper.Value();
-    bool backLeftBumpValue = backLeftBumper.Value();
-
+    //wait three seconds before beginning
     Sleep(3.0);
-        //loop iterates 3 times for three turns
-        for (int i = 0; i < 3; i++)
-        {
-            //robot moves forward until the front bumpers both hit the wall
-            rightMotor.SetPercent(25);
-            leftMotor.SetPercent(25);
-
-            // while wall hasn't been hit with both front bumpers, update bumper values
-            while (frontRightBumpValue != 0 && frontLeftBumpValue != 0) {
-            
-            frontRightBumpValue = frontRightBumper.Value();
-            frontLeftBumpValue = frontLeftBumper.Value();
-        }
         
-        Sleep(0.2);
+    //robot moves forward until the front bumpers both hit the wall
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(25);
 
-        if (frontRightBumpValue == 0 && frontLeftBumpValue == 0)
-        {
-            //both wheels stop for one second
-            rightMotor.SetPercent(0);
-            leftMotor.SetPercent(0);
-            Sleep (1.0);
-            //robot moves backwards
-            rightMotor.SetPercent(-20);
-            leftMotor.SetPercent(-20);
-            Sleep (.5);
-            rightMotor.SetPercent(0);
-            leftMotor.SetPercent(0);
-        }
-
-        //tracks how many turns the robot has made
-        
-
-        //when the amount of turns the robot has made is even, it turns right
-        if (turnTracker % 2 == 0)
-        {
-        rightMotor.SetPercent(-20);
-        leftMotor.SetPercent(20);
-        Sleep (1.0);
-        }
-        //when the amount of turns the robot has made is odd, it turns left
-        else if (turnTracker % 2 != 0)
-        {
-        rightMotor.SetPercent(20);
-        leftMotor.SetPercent(-20);
-        Sleep (1.0);
-        }
-        //increment turn amount
-        turnTracker++;
-
-        //robot moves backwards until both back bumpers are pressed
-        while (backRightBumpValue != 0 && backLeftBumpValue != 0)
-        {
-        rightMotor.SetPercent(-20);
-        leftMotor.SetPercent(-20);
-        }
+    // while wall hasn't been hit with both front bumpers, update bumper values
+    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
     }
+       
+    //both wheels stop for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot turns on right wheel until 90 degree turn
+    rightMotor.SetPercent(-20);
+    Sleep(.5);
+
+    //stop robot movement for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot moves backward until the back bumpers both hit the wall
+    rightMotor.SetPercent(-25);
+    leftMotor.SetPercent(-25);
+
+    // while wall hasn't been hit with both back bumpers, update bumper values
+    while (backRightBumper.Value() != 0 && backLeftBumper.Value() != 0) {
+    }
+
+    //stop robot movement for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot moves forward until the front bumpers both hit the wall
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(25);
+
+    // while wall hasn't been hit with both front bumpers, update bumper values
+    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
+    }
+
+    //both wheels stop for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot turns on left wheel until 90 degree turn
+    leftMotor.SetPercent(-20);
+    Sleep(.5);
+
+    //stop robot movement for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot moves backward until the back bumpers both hit the wall
+    rightMotor.SetPercent(-25);
+    leftMotor.SetPercent(-25);
+
+    // while wall hasn't been hit with both back bumpers, update bumper values
+    while (backRightBumper.Value() != 0 && backLeftBumper.Value() != 0) {
+    }
+
+    //stop robot movement for one second
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
+    Sleep(1.0);
+
+    //robot moves forward until the end of the course.
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(25);
+
+    // while wall hasn't been hit with both front bumpers, update bumper values
+    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
+    }
+
+    // disable motors. robot has completed the course
+    rightMotor.SetPercent(0);
+    leftMotor.SetPercent(0);
 }
