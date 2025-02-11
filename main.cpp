@@ -6,8 +6,6 @@
 /*      02/03/20  Version 3.0.1         */
 /****************************************/
 
-
-
 /* Include preprocessor directives */
 #include <FEHLCD.h>
 #include <FEHIO.h>
@@ -24,11 +22,13 @@
 
 FEHServo servo(FEHServo::Servo7); // declare servo arm
 
-//declare bumpers
-DigitalInputPin frontRightBumper(FEHIO::FEHIOPin);
-DigitalInputPin frontLeftBumper(FEHIO::FEHIOPin);
-DigitalInputPin backRightBumper(FEHIO::FEHIOPin);
-DigitalInputPin backLeftBumper(FEHIO::FEHIOPin);
+//declare digital input pins on P0_0-3 for bumpers
+//switches return 1 (true) when not being pressed
+//switches return 0 (false) when being pressed
+DigitalInputPin frontRightBumper(FEHIO::P0_0);
+DigitalInputPin frontLeftBumper(FEHIO::P0_1);
+DigitalInputPin backRightBumper(FEHIO::P0_2);
+DigitalInputPin backLeftBumper(FEHIO::P0_3);
 
 //declare motors
 FEHMotor rightMotor(FEHMotor::Motor0,9.0);
@@ -52,14 +52,6 @@ int main(void)
 
     servo.TouchCalibrate();
     */
-
-    //declare digital input pins on P0_0-3 for bumpers
-    //switches return 1 (true) when not being pressed
-    //switches return 0 (false) when being pressed
-    DigitalInputPin frontRightBumper(FEHIO::P0_0);
-    DigitalInputPin frontLeftBumper(FEHIO::P0_1);
-    DigitalInputPin backRightBumper(FEHIO::P0_2);
-    DigitalInputPin backLeftBumper(FEHIO::P0_3);
 
     //assign boolean values for bumpers
     bool frontRightBumpValue = frontRightBumper.Value();
