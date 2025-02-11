@@ -20,7 +20,7 @@
 #include <string.h>
 #include <stdio.h>
 
-FEHServo servo(FEHServo::Servo7); // declare servo arm
+//FEHServo servo(FEHServo::Servo7); // declare servo arm
 
 //declare digital input pins on P0_0-3 for bumpers
 //switches return 1 (true) when not being pressed
@@ -28,7 +28,7 @@ FEHServo servo(FEHServo::Servo7); // declare servo arm
 DigitalInputPin frontRightBumper(FEHIO::P0_0);
 DigitalInputPin frontLeftBumper(FEHIO::P0_1);
 DigitalInputPin backRightBumper(FEHIO::P0_2);
-DigitalInputPin backLeftBumper(FEHIO::P0_3);
+DigitalInputPin backLeftBumper(FEHIO::P3_0);
 
 //declare motors
 FEHMotor rightMotor(FEHMotor::Motor0,9.0);
@@ -69,7 +69,7 @@ int main(void)
 
     //robot turns on right wheel until 90 degree turn
     rightMotor.SetPercent(-20);
-    Sleep(.5);
+    Sleep(3.0);
 
     //stop robot movement for one second
     rightMotor.SetPercent(0);
@@ -104,7 +104,7 @@ int main(void)
 
     //robot turns on left wheel until 90 degree turn
     leftMotor.SetPercent(-20);
-    Sleep(.5);
+    Sleep(3.0);
 
     //stop robot movement for one second
     rightMotor.SetPercent(0);
