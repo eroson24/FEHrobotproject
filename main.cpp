@@ -15,7 +15,7 @@
 #include <FEHAccel.h>
 #include <FEHBattery.h>
 #include <FEHBuzzer.h>
-#include <FEHRPS.h>
+#include <FEHRCS.h>
 #include <FEHSD.h>
 #include <string.h>
 #include <stdio.h>
@@ -69,6 +69,8 @@ int main(void)
             leftMotor.SetPercent(25);
         }
         
+        Sleep(0.2);
+
         if (frontRightBumpValue == 0 && frontLeftBumpValue == 0)
         {
             //both wheels stop for one second
