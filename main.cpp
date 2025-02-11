@@ -64,9 +64,14 @@ int main(void)
         for (int i = 0; i < 3; i++)
         {
             //robot moves forward until the front bumpers both hit the wall
-            while (frontRightBumpValue != 0 && frontLeftBumpValue != 0) {
             rightMotor.SetPercent(25);
             leftMotor.SetPercent(25);
+
+            // while wall hasn't been hit with both front bumpers, update bumper values
+            while (frontRightBumpValue != 0 && frontLeftBumpValue != 0) {
+            
+            frontRightBumpValue = frontRightBumper.Value();
+            frontLeftBumpValue = frontLeftBumper.Value();
         }
         
         Sleep(0.2);
@@ -78,26 +83,28 @@ int main(void)
             leftMotor.SetPercent(0);
             Sleep (1.0);
             //robot moves backwards
-            rightMotor.SetPercent(-10);
-            leftMotor.SetPercent(-10);
+            rightMotor.SetPercent(-20);
+            leftMotor.SetPercent(-20);
             Sleep (.5);
+            rightMotor.SetPercent(0);
+            leftMotor.SetPercent(0);
         }
 
         //tracks how many turns the robot has made
-        int turnTracker = 0;
+        
 
         //when the amount of turns the robot has made is even, it turns right
         if (turnTracker % 2 == 0)
         {
-        rightMotor.SetPercent(-10);
-        leftMotor.SetPercent(10);
+        rightMotor.SetPercent(-20);
+        leftMotor.SetPercent(20);
         Sleep (1.0);
         }
         //when the amount of turns the robot has made is odd, it turns left
         else if (turnTracker % 2 != 0)
         {
-        rightMotor.SetPercent(10);
-        leftMotor.SetPercent(-10);
+        rightMotor.SetPercent(20);
+        leftMotor.SetPercent(-20);
         Sleep (1.0);
         }
         //increment turn amount
@@ -106,8 +113,8 @@ int main(void)
         //robot moves backwards until both back bumpers are pressed
         while (backRightBumpValue != 0 && backLeftBumpValue != 0)
         {
-        rightMotor.SetPercent(-10);
-        leftMotor.SetPercent(-10);
+        rightMotor.SetPercent(-20);
+        leftMotor.SetPercent(-20);
         }
     }
 }
