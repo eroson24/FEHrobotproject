@@ -1,9 +1,9 @@
 /****************************************/
-/*      Proteus Test Code R04_1         */
+/*      Proteus Exploration #2          */
 /*      OSU FEH Spring 2025             */
 /*      Mark Oyster, Erol Sonmez,       */
 /*      Reagan Massey, Austin Toczynski */
-/*      02/03/20  Version 3.0.1         */
+/*      02/14/2025  Version 3.0.1       */
 /****************************************/
 
 /* Include preprocessor directives */
@@ -20,119 +20,107 @@
 #include <string.h>
 #include <stdio.h>
 
-//FEHServo servo(FEHServo::Servo7); // declare servo arm
 
-//declare digital input pins on P0_0-3 for bumpers
-//switches return 1 (true) when not being pressed
-//switches return 0 (false) when being pressed
-DigitalInputPin frontRightBumper(FEHIO::P0_0);
-DigitalInputPin frontLeftBumper(FEHIO::P0_1);
-DigitalInputPin backRightBumper(FEHIO::P0_2);
-DigitalInputPin backLeftBumper(FEHIO::P3_0);
-
-//declare motors
-FEHMotor rightMotor(FEHMotor::Motor0,9.0);
-FEHMotor leftMotor(FEHMotor::Motor1,9.0);
+// Declarations for analog optosensors
+AnalogInputPin right_opto(FEHIO::P0_0);
+AnalogInputPin middle_opto(FEHIO::P1_0);
+AnalogInputPin left_opto(FEHIO::P2_0);
 
 int main(void)
 {
-    /*
-    // declare light sensor input pin
-    AnalogInputPin CdS_cell(FEHIO::P2_0);
+    float x, y; //for touch screen
 
-    // print value of light sensor to screen
-    while (1) {
-        LCD.Write(CdS_cell.Value());
-        Sleep(300);
-        LCD.Clear();
-    }
-    
+    // Open output file and prepare for writing values to it
+    FEHFile *fptr = SD.FOpen("data.txt","w");
 
-    servo.TouchCalibrate();
-    */
+    //Initialize the screen
+    LCD.Clear(BLACK);
+    LCD.SetFontColor(WHITE);
 
-    //wait three seconds before beginning
-    Sleep(3.0);
-        
-    //robot moves forward until the front bumpers both hit the wall
-    rightMotor.SetPercent(25);
-    leftMotor.SetPercent(25);
+    LCD.WriteLine("Analog Optosensor Testing");
+    LCD.WriteLine("Touch the screen");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
 
-    // while wall hasn't been hit with both front bumpers, update bumper values
-    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
-    }
-       
-    //both wheels stop for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
+    // Record values for optosensors on and off of the straight line
+    // Left Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    //robot turns on right wheel until 90 degree turn
-    rightMotor.SetPercent(-20);
-    Sleep(3.0);
+    // Left Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    //stop robot movement for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
+    // Middle Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    //robot moves backward until the back bumpers both hit the wall
-    rightMotor.SetPercent(-25);
-    leftMotor.SetPercent(-25);
+    // Middle Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    // while wall hasn't been hit with both back bumpers, update bumper values
-    while (backRightBumper.Value() != 0 && backLeftBumper.Value() != 0) {
-    }
+    // Right Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    //stop robot movement for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
+    // Right Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
 
-    //robot moves forward until the front bumpers both hit the wall
-    rightMotor.SetPercent(25);
-    leftMotor.SetPercent(25);
+    // Close output file
+    SD.FClose(fptr);
 
-    // while wall hasn't been hit with both front bumpers, update bumper values
-    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
-    }
+    // Print end message to screen
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Test Finished");
 
-    //both wheels stop for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
-
-    //robot turns on left wheel until 90 degree turn
-    leftMotor.SetPercent(-20);
-    Sleep(3.0);
-
-    //stop robot movement for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
-
-    //robot moves backward until the back bumpers both hit the wall
-    rightMotor.SetPercent(-25);
-    leftMotor.SetPercent(-25);
-
-    // while wall hasn't been hit with both back bumpers, update bumper values
-    while (backRightBumper.Value() != 0 && backLeftBumper.Value() != 0) {
-    }
-
-    //stop robot movement for one second
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
-    Sleep(1.0);
-
-    //robot moves forward until the end of the course.
-    rightMotor.SetPercent(25);
-    leftMotor.SetPercent(25);
-
-    // while wall hasn't been hit with both front bumpers, update bumper values
-    while (frontRightBumper.Value() != 0 && frontLeftBumper.Value() != 0) {
-    }
-
-    // disable motors. robot has completed the course
-    rightMotor.SetPercent(0);
-    leftMotor.SetPercent(0);
+    return 0;
 }
