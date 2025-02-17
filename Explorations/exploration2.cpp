@@ -1,0 +1,162 @@
+/****************************************/
+/*      Proteus Exploration #2          */
+/*      OSU FEH Spring 2025             */
+/*      Mark Oyster, Erol Sonmez,       */
+/*      Reagan Massey, Austin Toczynski */
+/*      02/14/2025  Version 3.0.1       */
+/****************************************/
+
+/* Include preprocessor directives */
+#include <FEHLCD.h>
+#include <FEHIO.h>
+#include <FEHUtility.h>
+#include <FEHMotor.h>
+#include <FEHServo.h>
+#include <FEHAccel.h>
+#include <FEHBattery.h>
+#include <FEHBuzzer.h>
+#include <FEHRCS.h>
+#include <FEHSD.h>
+#include <string.h>
+#include <stdio.h>
+
+
+// Declarations for analog optosensors
+AnalogInputPin right_opto(FEHIO::P0_0);
+AnalogInputPin middle_opto(FEHIO::P1_0);
+AnalogInputPin left_opto(FEHIO::P2_0);
+
+FEHMotor rightMotor(FEHMotor::Motor1,9.0);
+FEHMotor leftMotor(FEHMotor::Motor0,9.0);
+
+int main(void)
+{
+    /* PROGRAM TO GET OPTOSENSOR DATA FOR CALIBRATION
+    float x, y; //for touch screen
+
+    // Open output file and prepare for writing values to it
+    FEHFile *fptr = SD.FOpen("data.txt","w");
+
+    //Initialize the screen
+    LCD.Clear(BLACK);
+    LCD.SetFontColor(WHITE);
+
+    LCD.WriteLine("Analog Optosensor Testing");
+    LCD.WriteLine("Touch the screen");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+
+    // Record values for optosensors on and off of the straight line
+    // Left Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Left Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Middle Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Middle Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Right Optosensor on straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor on straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (1/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Right Optosensor off straight line
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Place left optosensor off straight line");
+    Sleep(0.25); // Wait to avoid double input
+    LCD.WriteLine("Touch screen to record value (2/12)");
+    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
+    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    // Write the value returned by the optosensor to your output file
+    SD.FPrintf(fptr, "Left: %f", left_opto.Value());
+    SD.FPrintf(fptr, "Middle: %f", middle_opto.Value());
+    SD.FPrintf(fptr, "Right: %f", right_opto.Value());
+
+    // Close output file
+    SD.FClose(fptr);
+
+    // Print end message to screen
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Test Finished");
+
+    return 0;
+    */
+
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(25);
+
+    bool courseComplete = false;
+    while (!courseComplete) {
+        // if right and middle are on line
+        if (right_opto.Value() > 1.9 && middle_opto.Value() > 2) {
+        rightMotor.SetPercent(25);
+        leftMotor.SetPercent(10);
+        }
+        // if left and middle are on line
+        else if (left_opto.Value() > 1.8 && middle_opto.Value() > 2) {
+        rightMotor.SetPercent(10);
+        leftMotor.SetPercent(25);
+        }
+        // if just left
+        else if (left_opto.Value() > 1.8) {
+        rightMotor.SetPercent(25);
+        leftMotor.SetPercent(10);
+        // if just right
+        } else if (right_opto.Value() > 1.9) {
+        rightMotor.SetPercent(10);
+        leftMotor.SetPercent(25);
+        }
+        else
+        {
+        rightMotor.SetPercent(25);
+        leftMotor.SetPercent(25);
+        }
+    }
+}
