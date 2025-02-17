@@ -34,7 +34,7 @@ DigitalInputPin backLeftBumper(FEHIO::P3_0);
 FEHMotor rightMotor(FEHMotor::Motor0,9.0);
 FEHMotor leftMotor(FEHMotor::Motor1,9.0);
 
-int main(void)
+int test2(void)
 {
     /*
     // declare light sensor input pin
@@ -135,4 +135,6 @@ int main(void)
     // disable motors. robot has completed the course
     rightMotor.SetPercent(0);
     leftMotor.SetPercent(0);
+
+    return 0;
 }

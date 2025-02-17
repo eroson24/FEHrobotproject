@@ -1,3 +1,4 @@
+
 /****************************************/
 /*      Proteus Exploration #2          */
 /*      OSU FEH Spring 2025             */
@@ -7,6 +8,7 @@
 /****************************************/
 
 /* Include preprocessor directives */
+
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
@@ -29,7 +31,7 @@ AnalogInputPin left_opto(FEHIO::P2_0);
 FEHMotor rightMotor(FEHMotor::Motor1,9.0);
 FEHMotor leftMotor(FEHMotor::Motor0,9.0);
 
-int main(void)
+int test(void)
 {
     /* PROGRAM TO GET OPTOSENSOR DATA FOR CALIBRATION
     float x, y; //for touch screen
@@ -159,4 +161,5 @@ int main(void)
         leftMotor.SetPercent(25);
         }
     }
+    return 0;
 }
