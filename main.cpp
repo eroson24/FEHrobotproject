@@ -1,9 +1,9 @@
 /****************************************/
-/*      Proteus Exploration #2          */
+/*      Proteus Test Code R04_1         */
 /*      OSU FEH Spring 2025             */
 /*      Mark Oyster, Erol Sonmez,       */
 /*      Reagan Massey, Austin Toczynski */
-/*      02/14/2025  Version 3.0.1       */
+/*      02/03/20  Version 3.0.1         */
 /****************************************/
 
 /* Include preprocessor directives */
@@ -20,60 +20,75 @@
 #include <string.h>
 #include <stdio.h>
 
-
-//Declarations for encoders & motors
-DigitalEncoder right_encoder(FEHIO::P0_0);
-DigitalEncoder left_encoder(FEHIO::P0_1);
-FEHMotor right_motor(FEHMotor::Motor0,9.0);
-FEHMotor left_motor(FEHMotor::Motor1,9.0);
-
-void move_forward(int percent, int counts) //using encoders
-{
-    //Reset encoder counts
-    right_encoder.ResetCounts();
-    left_encoder.ResetCounts();
-
-    //Set both motors to desired percent
-    right_motor.SetPercent(percent);
-    left_motor.SetPercent(percent);
-
-    //While the average of the left and right encoder is less than counts,
-    //keep running motors
-    while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
-
-    //Turn off motors
-    right_motor.Stop();
-    left_motor.Stop();
-}
+//declare motors
+FEHMotor vexMotor(FEHMotor::Motor0,9.0);
 
 int main(void)
 {
-    int motor_percent = 25; //Input power level here
-    int expected_counts = 243; //Input theoretical counts here
-
     float x, y; //for touch screen
 
-    //Initialize the screen
-    LCD.Clear(BLACK);
-    LCD.SetFontColor(WHITE);
+    vexMotor.SetPercent(0);
+    while(!LCD.Touch(&x,&y));
 
-    LCD.WriteLine("Shaft Encoder Exploration Test");
-    LCD.WriteLine("Touch the screen");
-    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
-    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(10);
+    LCD.Write("10% speed");
+    while(!LCD.Touch(&x,&y));
 
-    move_forward(motor_percent, expected_counts); //see function
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(20);
+    LCD.Write("20% speed");
+    while(!LCD.Touch(&x,&y));
 
-    Sleep(2.0); //Wait for counts to stabilize
-    //Print out data
-    LCD.Write("Theoretical Counts: ");
-    LCD.WriteLine(expected_counts);
-    LCD.Write("Motor Percent: ");
-    LCD.WriteLine(motor_percent);
-    LCD.Write("Actual LE Counts: ");
-    LCD.WriteLine(left_encoder.Counts());
-    LCD.Write("Actual RE Counts: ");
-    LCD.WriteLine(right_encoder.Counts());
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(30);
+    LCD.Write("30% speed");
+    while(!LCD.Touch(&x,&y));
 
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(40);
+    LCD.Write("40% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(50);
+    LCD.Write("50% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(60);
+    LCD.Write("60% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(70);
+    LCD.Write("70% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(80);
+    LCD.Write("80% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(90);
+    LCD.Write("90% speed");
+    while(!LCD.Touch(&x,&y));
+
+    Sleep(1.0);
+    LCD.Clear();
+    vexMotor.SetPercent(100);
+    LCD.Write("100% speed");
+    while(!LCD.Touch(&x,&y));
+    
     return 0;
 }
