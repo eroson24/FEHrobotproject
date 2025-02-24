@@ -7,6 +7,7 @@
 /****************************************/
 
 /* Include preprocessor directives */
+#include <string.h>
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
@@ -28,43 +29,51 @@ FEHMotor tread_motor(FEHMotor::Motor0,9.0);
 
 int main(void)
 {
+    //For MileStone 1
+
+    //For 
+    int strength = 50;
+    double time = 5;
+    char direction[15] = "forward";
+    moveRobot(strength, time, direction);
+    turn(10, 2, false);
+    time = 2;
+    moveRobot(strength, time, direction);
+    turn(10, 2, true);
+    time = 5;
+    moveRobot(strength, time, direction);
     
+    /*For Ramp:
+    int strength = 50;
+    double time = 10;
+    char direction[15] = "forward";
+    moveRobot(strength, time, direction);
+    */
     
     return 0;
 }
 
 
-void moveRobot(int strength, double time, int direction) {
-  //Reset encoder counts
-
-  /*
-  For direction:
-  1 is forward
-  2 is back right
-  3 is back left
-  */
+void moveRobot(int strength, double time, char direction[]) {
 
   //move forward for time
-  if (direction == 1){
+  if (strcmp(direction, "forward") == 0){
     right_motor.SetPercent(strength);
     left_motor.SetPercent(strength);
     Sleep(time);
   }
-
   //move back right for time
-  if (direction == 2){
+  else if (strcmp(direction, "backRight") == 0){
     right_motor.SetPercent(strength);
     back_motor.SetPercent(strength);
     Sleep(time);
   }
-
   //move back left for time
-  if (direction == 3){
+  else if (strcmp(direction, "backLeft") == 0){
     left_motor.SetPercent(strength);
     back_motor.SetPercent(strength);
     Sleep(time);
   }
-
     //Turn off motors
     right_motor.Stop();
     left_motor.Stop();
@@ -85,6 +94,7 @@ bool detectLine(int voltage) {
     return voltageDetected;
 }
 
+//clockwise is true
 // turn function for robot
 int turn(int strengthPercent, double seconds, bool clockwise) {
     if (clockwise) {
