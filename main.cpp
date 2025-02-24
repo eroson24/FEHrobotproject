@@ -26,9 +26,45 @@ FEHMotor left_motor(FEHMotor::Motor0,9.0);
 FEHMotor back_motor(FEHMotor::Motor0,9.0);
 FEHMotor tread_motor(FEHMotor::Motor0,9.0);
 
+// declare optosensor
+AnalogInputPin optosensor(FEHIO::P1_0);
+
+// detectLine function for robot
+bool detectLine(int voltage) {
+    bool voltageDetected;
+    if (optosensor.Value() > voltage) {
+        voltageDetected = true;
+    } else {
+        voltageDetected = false;
+    }
+    return voltageDetected;
+}
+
+// turn function for robot
+int turn(int strengthPercent, double seconds, bool clockwise) {
+    if (clockwise) {
+        right_motor.SetPercent(strengthPercent);
+        left_motor.SetPercent(strengthPercent);
+        back_motor.SetPercent(strengthPercent);
+        Sleep(seconds);
+        right_motor.SetPercent(0);
+        left_motor.SetPercent(0);
+        back_motor.SetPercent(0);
+    } else {
+        right_motor.SetPercent(-strengthPercent);
+        left_motor.SetPercent(-strengthPercent);
+        back_motor.SetPercent(-strengthPercent);
+        Sleep(seconds);
+        right_motor.SetPercent(0);
+        left_motor.SetPercent(0);
+        back_motor.SetPercent(0);
+    }
+    return 0;
+}
+
 int main(void)
 {
-    
+
     
     return 0;
 }
