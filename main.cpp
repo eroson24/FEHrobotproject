@@ -20,75 +20,15 @@
 #include <string.h>
 #include <stdio.h>
 
-//declare motors
-FEHMotor vexMotor(FEHMotor::Motor0,9.0);
+//declare motors.
+FEHMotor right_motor(FEHMotor::Motor0,9.0);
+FEHMotor left_motor(FEHMotor::Motor0,9.0);
+FEHMotor back_motor(FEHMotor::Motor0,9.0);
+FEHMotor tread_motor(FEHMotor::Motor0,9.0);
 
 int main(void)
 {
-    float x, y; //for touch screen
-
-    vexMotor.SetPercent(0);
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(10);
-    LCD.Write("10% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(20);
-    LCD.Write("20% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(30);
-    LCD.Write("30% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(40);
-    LCD.Write("40% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(50);
-    LCD.Write("50% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(60);
-    LCD.Write("60% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(70);
-    LCD.Write("70% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(80);
-    LCD.Write("80% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(90);
-    LCD.Write("90% speed");
-    while(!LCD.Touch(&x,&y));
-
-    Sleep(1.0);
-    LCD.Clear();
-    vexMotor.SetPercent(100);
-    LCD.Write("100% speed");
-    while(!LCD.Touch(&x,&y));
+    
     
     return 0;
 }
