@@ -23,42 +23,15 @@
 
 //declare motors.
 FEHMotor right_motor(FEHMotor::Motor0,9.0);
-FEHMotor left_motor(FEHMotor::Motor0,9.0);
-FEHMotor back_motor(FEHMotor::Motor0,9.0);
-FEHMotor tread_motor(FEHMotor::Motor0,9.0);
-
-int main(void)
-{
-    //For MileStone 1
-
-    //For 
-    int strength = 50;
-    double time = 5;
-    char direction[15] = "forward";
-    moveRobot(strength, time, direction);
-    turn(10, 2, false);
-    time = 2;
-    moveRobot(strength, time, direction);
-    turn(10, 2, true);
-    time = 5;
-    moveRobot(strength, time, direction);
-    
-    /*For Ramp:
-    int strength = 50;
-    double time = 10;
-    char direction[15] = "forward";
-    moveRobot(strength, time, direction);
-    */
-    
-    return 0;
-}
-
+FEHMotor left_motor(FEHMotor::Motor1,9.0);
+FEHMotor back_motor(FEHMotor::Motor2,9.0);
+FEHMotor tread_motor(FEHMotor::Motor3,9.0);
 
 void moveRobot(int strength, double time, char direction[]) {
 
   //move forward for time
   if (strcmp(direction, "forward") == 0){
-    right_motor.SetPercent(strength);
+    right_motor.SetPercent(-strength);
     left_motor.SetPercent(strength);
     Sleep(time);
   }
@@ -72,6 +45,11 @@ void moveRobot(int strength, double time, char direction[]) {
   else if (strcmp(direction, "backLeft") == 0){
     left_motor.SetPercent(strength);
     back_motor.SetPercent(strength);
+    Sleep(time);
+  }
+  else if (strcmp(direction, "backward") == 0){
+    left_motor.SetPercent(-strength);
+    right_motor.SetPercent(strength);
     Sleep(time);
   }
     //Turn off motors
@@ -117,5 +95,25 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     return 0;
 }
 
-  
+
+int main(void)
+{
+  // declare constants
+  int strength = 60;
+  double time = 2.75;
+  char Forward[] = "forward";
+  char Backward[] = "backward";
+  float x, y;
+
+  // milestone 1 part 1 code
+  while(!LCD.Touch(&x, &y));
+  moveRobot(strength, time, Forward);
+
+  // milestone 1 part 2 code
+  while(!LCD.Touch(&x, &y));
+  moveRobot(strength, time, Forward);
+  moveRobot(strength, time, Backward);
+    
+  return 0;
+}
 
