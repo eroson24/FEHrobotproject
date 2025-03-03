@@ -27,6 +27,8 @@ FEHMotor left_motor(FEHMotor::Motor1,9.0);
 FEHMotor back_motor(FEHMotor::Motor2,9.0);
 FEHMotor tread_motor(FEHMotor::Motor3,9.0);
 
+DigitalInputPin distance_sensor(FEHIO::P1_0);
+
 void moveRobot(int strength, double time, char direction[]) {
 
   //move forward for time
@@ -98,12 +100,31 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
 
 int main(void)
 {
+  /*
+  RCS.InitializeTouchMenu("0910B8VYV");
+  int lever = RCS.GetLever();
+  LCD.WriteLine(RCS.Time());
+  */
+ LCD.Clear();
+ LCD.SetBackgroundColor(BLACK);
+ LCD.SetFontColor(WHITE);
+ 
+  int objectInRange = distance_sensor.Value();
+  while (true){
+    objectInRange = distance_sensor.Value();
+    
+    LCD.WriteLine(objectInRange);
+  }
+
+  
   // declare constants
   int strength = 60;
   double time = 2.75;
   char Forward[] = "forward";
   char Backward[] = "backward";
   float x, y;
+  
+  
 
   /*
   // milestone 1 part 1 code
