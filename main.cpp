@@ -105,6 +105,7 @@ int main(void)
   char Backward[] = "backward";
   float x, y;
 
+  /*
   // milestone 1 part 1 code
   while(!LCD.Touch(&x, &y));
   moveRobot(strength, time, Forward);
@@ -113,6 +114,9 @@ int main(void)
   while(!LCD.Touch(&x, &y));
   moveRobot(strength, time, Forward);
   moveRobot(strength, time, Backward);
+  */
+
+
     
   return 0;
 }
