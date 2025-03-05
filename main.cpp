@@ -121,7 +121,7 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     return 0;
 }
 
-float actualPower (float desiredPower){
+float actualPower(float desiredPower) {
 float actualPower = (11.5/Battery.Voltage()) * desiredPower;
 return actualPower;
 }
@@ -155,13 +155,13 @@ int main(void)
   }
   //Press start button
   moveRobotTime(strength, time, Backward);
-  Sleep(1);
+  Sleep(1.0);
   moveRobotTime(strength, time, Forward);
 
   //Turn towards ramp
-  time = .2;
-  turn(strength,time, true);
-  time = 5;
+  time = 0.2;
+  turn(strength, time, true);
+  time = 5.0;
 
   //move towards and up ramp
   moveRobotTime(strength, time, Forward);
@@ -196,18 +196,18 @@ int main(void)
   }
 
   //move to correct button side
-  time = .5;
+  time = 0.5;
   moveRobotTime(strength, time, humidifierButton);
 
   //push button
-  time = 3;
+  time = 3.0;
   moveRobotTime(strength, time, Forward);
-  Sleep(1);
+  Sleep(1.0);
 
   //Bonus points from here
 
   //move back to ramp
-  time = 5;
+  time = 5.0;
   moveRobotTime(strength, time, Backward);
 
   //turn towards ramp
@@ -215,7 +215,7 @@ int main(void)
   turn(strength, time, false);
 
   //go down ramp to start area
-  time = 5;
+  time = 5.0;
   moveRobotTime(strength, time, Forward);
 
   //turn towards starting area
@@ -223,14 +223,6 @@ int main(void)
   turn(strength, time, true);
 
   //find stop light
-  
-
- 
-
-
-  
-  
-  
   
 /*
   RCS.InitializeTouchMenu("0910B8VYV");
@@ -247,8 +239,6 @@ int main(void)
   moveRobot(strength, time, Forward);
   moveRobot(strength, time, Backward);
   */
-
-
     
   return 0;
 }
