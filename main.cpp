@@ -135,9 +135,11 @@ float actualPower(float desiredPower) {
     //Clear Screen for writing
     LCD.Clear();
     LCD.SetFontColor(WHITE);
+    LCD.SetBackgroundColor(RED);
+
   
     // declare constants
-    float CdS_Value = 0;
+    float CdS_Value = 10;
     const float RED_VALUE = .35;
     const float NO_LIGHT = 2.5;
     
