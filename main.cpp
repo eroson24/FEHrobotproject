@@ -121,108 +121,117 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     return 0;
 }
 
+//function for finding actual power from proteus battery level
 float actualPower(float desiredPower) {
-float actualPower = (11.5/Battery.Voltage()) * desiredPower;
-return actualPower;
-}
-
-//Declare CdS cell sensor
-AnalogInputPin CdS_cell(FEHIO::P0_0);
-
-int main(void)
-{
-  //Clear Screen for writing
-  LCD.Clear();
-  LCD.SetFontColor(WHITE);
-
-  // declare constants
-  float CdS_Value = 0;
-  const float RED_VALUE = .3;
-  const float BLUE_VALUE = .4;
+  float actualPower = (11.5/Battery.Voltage()) * desiredPower;
+  return actualPower;
+  }
   
-  const float NINETY_DEGREE_TURN = .5;
-  char Forward[] = "forward";
-  char Backward[] = "backward";
-  float x, y;
-
-  float strength = actualPower(50);
-  double time = .5;
-
-  //wait until red light turns on to start
-  while (CdS_Value < RED_VALUE)
+  //Declare CdS cell sensor
+  AnalogInputPin CdS_cell(FEHIO::P0_0);
+  
+  int main(void)
   {
-  CdS_Value = CdS_cell.Value();
-  }
-  //Press start button
-  moveRobotTime(strength, time, Backward);
-  Sleep(1.0);
-  moveRobotTime(strength, time, Forward);
-
-  //Turn towards ramp
-  time = 0.2;
-  turn(strength, time, true);
-  time = 5.0;
-
-  //move towards and up ramp
-  moveRobotTime(strength, time, Forward);
-
-  //turn towards humidifier area
-  time = NINETY_DEGREE_TURN;
-  turn(strength, time, false);
-
-  //move to light sensor, stops when cds cell detects light
-  CdS_Value = CdS_cell.Value();
-  while (CdS_Value == 0)
-  {
+    //Clear Screen for writing
+    LCD.Clear();
+    LCD.SetFontColor(WHITE);
+  
+    // declare constants
+    float CdS_Value = 0;
+    const float RED_VALUE = .35;
+    const float NO_LIGHT = 2.5;
+    
+    const float NINETY_DEGREE_TURN = .5;
+    char Forward[] = "forward";
+    char Backward[] = "backward";
+    float x, y;
+  
+    float strength = actualPower(50);
+    double time = .5;
+  
+    //wait until red light turns on to start
+    while (CdS_Value > NO_LIGHT)
+    {
     CdS_Value = CdS_cell.Value();
-    moveRobot(strength, Forward);
-  }
-  right_motor.Stop();
-  left_motor.Stop();
+    }
+    //Press start button
+    moveRobotTime(strength, time, Backward);
+    Sleep(1.0);
+    moveRobotTime(strength, time, Forward);
+  
+    //Turn towards ramp
+    time = 0.2;
+    turn(strength, time, true);
+    time = 5.0;
+  
+    //move towards and up ramp
+    moveRobotTime(strength, time, Forward);
+  
+    //turn towards humidifier area
+    time = NINETY_DEGREE_TURN;
+    turn(strength, time, false);
+  
+    //move to light sensor, stops when cds cell detects light
+    CdS_Value = CdS_cell.Value();
+    while (CdS_Value > NO_LIGHT)
+    {
+      CdS_Value = CdS_cell.Value();
+      moveRobot(strength, Forward);
+    }
+    right_motor.Stop();
+    left_motor.Stop();
+  
+    //displays light color to screen and decides which direction to move
+    char humidifierButton[10];
+    if (CdS_Value <= RED_VALUE)
+    {
+      LCD.SetBackgroundColor(RED);
+      LCD.WriteRC("RED", 7, 8);
+      char humidifierButton[] = "backRight";
+    }
+    else if (CdS_Value >= RED_VALUE && CdS_Value <= NO_LIGHT)
+    {
+      LCD.SetBackgroundColor(BLUE);
+      LCD.WriteRC("BLUE", 7, 8);
+      char humidifierButton[] = "backLeft";
+    }
+  
+    //move to correct button side
+    time = 0.5;
+    moveRobotTime(strength, time, humidifierButton);
+  
+    //push button
+    time = 3.0;
+    moveRobotTime(strength, time, Forward);
+    Sleep(1.0);
+  
+    //Bonus points from here
+  
+    //move back to ramp
+    time = 5.0;
+    moveRobotTime(strength, time, Backward);
+  
+    //turn towards ramp
+    time = NINETY_DEGREE_TURN;
+    turn(strength, time, false);
+  
+    //go down ramp to start area
+    time = 5.0;
+    moveRobotTime(strength, time, Forward);
+  
+    //turn towards starting area
+    time = NINETY_DEGREE_TURN;
+    turn(strength, time, true);
+  
+    //find stop light
+  
 
-  //displays light color to screen and decides which direction to move
-  char humidifierButton[10];
-  if (CdS_Value == RED_VALUE)
-  {
-    LCD.SetBackgroundColor(RED);
-    LCD.WriteRC("RED", 7, 8);
-    char humidifierButton[] = "backRight";
-  }
-  else if (CdS_Value == BLUE_VALUE)
-  {
-    LCD.SetBackgroundColor(BLUE);
-    LCD.WriteRC("BLUE", 7, 8);
-    char humidifierButton[] = "backLeft";
-  }
+ 
 
-  //move to correct button side
-  time = 0.5;
-  moveRobotTime(strength, time, humidifierButton);
 
-  //push button
-  time = 3.0;
-  moveRobotTime(strength, time, Forward);
-  Sleep(1.0);
-
-  //Bonus points from here
-
-  //move back to ramp
-  time = 5.0;
-  moveRobotTime(strength, time, Backward);
-
-  //turn towards ramp
-  time = NINETY_DEGREE_TURN;
-  turn(strength, time, false);
-
-  //go down ramp to start area
-  time = 5.0;
-  moveRobotTime(strength, time, Forward);
-
-  //turn towards starting area
-  time = NINETY_DEGREE_TURN;
-  turn(strength, time, true);
-
-  //find stop light
+  
+  
+  
   
 /*
   RCS.InitializeTouchMenu("0910B8VYV");
@@ -239,6 +248,8 @@ int main(void)
   moveRobot(strength, time, Forward);
   moveRobot(strength, time, Backward);
   */
+
+
     
   return 0;
 }
