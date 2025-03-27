@@ -21,18 +21,11 @@
 #include <stdio.h>
 #include <string.h>
 
-
 //declare motors.
-FEHMotor right_motor(FEHMotor::Motor0,9.0);
-FEHMotor left_motor(FEHMotor::Motor1,9.0);
-FEHMotor back_motor(FEHMotor::Motor2,9.0);
-FEHMotor tread_motor(FEHMotor::Motor3,9.0);
-
-// declare optosensors
-AnalogInputPin right_opto(FEHIO::P0_0);
-AnalogInputPin middle_opto(FEHIO::P1_0);
-AnalogInputPin left_opto(FEHIO::P2_0);
-
+FEHMotor tread_motor(FEHMotor::Motor0,9.0);
+FEHMotor right_motor(FEHMotor::Motor1,9.0);
+FEHMotor left_motor(FEHMotor::Motor2,9.0);
+FEHMotor back_motor(FEHMotor::Motor3,9.0);
 
 
 void moveRobotTime(int strength, double time, char direction[]) {
@@ -91,18 +84,9 @@ void moveRobot(int strength, char direction[]) {
 }
 
 // declare optosensor
-AnalogInputPin optosensor(FEHIO::P1_0);
-
-// detectLine function for robot
-bool detectLine(int voltage) {
-    bool voltageDetected;
-    if (optosensor.Value() > voltage) {
-        voltageDetected = true;
-    } else {
-        voltageDetected = false;
-    }
-    return voltageDetected;
-}
+AnalogInputPin optosensor_left(FEHIO::P0_0);
+AnalogInputPin optosensor_middle(FEHIO::P0_2);
+AnalogInputPin optosensor_right(FEHIO::P0_7);
 
 //clockwise is true
 // turn function for robot
@@ -138,14 +122,10 @@ float actualPower(float desiredPower) {
   }
   
   //Declare CdS cell sensor
-  
+  AnalogInputPin CdS_cell(FEHIO::P2_0);
   
   int main(void)
   {
-     AnalogInputPin CdS_cell(FEHIO::P0_0);
-     
-  
-
     // declare light sensor input pin
     const float RED_VALUE = .1;
     const float BLUE_VALUE = .7;
@@ -155,13 +135,12 @@ float actualPower(float desiredPower) {
     LCD.SetFontColor(WHITE);
     LCD.Clear();
     Sleep(.1);
-    
    
     // declare constants
     float CdS_Value = 10;
     //for 25 power
-    const float NINETY_DEGREE_TURN = .35;
-    const float FOURTYFIVE_DEGREE_TURN = .17;
+    const float NINETY_DEGREE_TURN = 0.49;
+    const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     char Forward[] = "forward";
     char Backward[] = "backward";
     char backRight[] = "backRight";
@@ -169,176 +148,34 @@ float actualPower(float desiredPower) {
     float x, y;
     int buttonSide = 0;
     Sleep(.1);
-    float strength = 100;
-    double time = .1;
+    float strength = 70;
+    double time = 0.5;
 
-   /*
-   //code for testing CdS Cell lights maximums and minimums
+  //wait until red light turns on to start
+  while (CdS_Value > RED_VALUE)
+  {
     CdS_Value = CdS_cell.Value();
-    float CdSMax = CdS_Value;
-    float CdSMin = CdS_Value;
-   while (1){
-    CdS_Value = CdS_cell.Value();
-    
-    if (CdS_Value < CdSMin){
-      CdSMin = CdS_Value;
-    } 
-    if (CdS_Value > CdSMax){
-      CdSMax = CdS_Value;
-    }
-
-    LCD.WriteRC(CdS_Value,6,8);
-    LCD.Write("Min: ");
-    LCD.WriteLine(CdSMin);
-    LCD.Write("Max: ");
-    LCD.WriteLine(CdSMax);
-    
-    Sleep(.1);
-    LCD.Clear();
-   }
-   */
-   //Max CdsValue no light: 1.611
-   //Min CdsValue no light: .737
-
-   //Max CdsValue course blue light: 1.451
-   //Min CdsValue course blue light: .711
-
-   //Max CdsValue light blue light: 2.740
-   //Min CdsValue light blue light: 1.806
-
-   //Max CdsValue blue light: .056
-   //Min CdsValue blue light: 1.456
-  
-    
-    //wait until red light turns on to start
-    while (CdS_Value > RED_VALUE)
-    {
-    CdS_Value = CdS_cell.Value();
-    }
+  }
+    //Go forward from start area
+    moveRobotTime(50, 1.5, Forward);
     
     //Turn from start area
-    turn(strength, NINETY_DEGREE_TURN, true);
-    Sleep(1.0);
-    //move to center of ramp
-    time = .2;
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-
-    //turn towards ramp
     turn(strength, FOURTYFIVE_DEGREE_TURN, false);
-    Sleep(1.0);
-    time = 2.18;
-  
-    //move up ramp
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-  
-    //turn towards humidifier area
-    time = NINETY_DEGREE_TURN;
-    turn(strength, time, false);
-    Sleep(1.0);
     
-  
-    //move to light sensor, stops when after .88 seconds and cds cell detects light
-    right_motor.SetPercent(-strength);
-    left_motor.SetPercent(strength);
-    Sleep(.88);
-    
-    int lightTracker = 1;
-    while (lightTracker == 1){
-      CdS_Value = CdS_cell.Value();
-      if (CdS_Value < RED_VALUE || CdS_Value > BLUE_VALUE)
+    //Go forward towards apple basket. Robot should be on black
+    // tape after this point. 
+    moveRobotTime(50, 1.0, Forward);
+
+    //Begin line following algorithm
+    while (optosensor_left.Value() > 3.325 || optosensor_middle.Value() > 3.325 || optosensor_right.Value() > 3.325)
     {
-      LCD.WriteLine("CdS Value: ");
-      LCD.WriteLine(CdS_Value);
-      right_motor.Stop();
-      left_motor.Stop();
-      lightTracker = 0;
-    }
-    Sleep(.01);
-    
-    }
-    
+        moveRobot(50, Backward);
 
-    //takes average of CdS cell values
-    float CdSAvg = 0;
-    for (int i = 0; i <= 300; i++ ){
-      CdS_Value = CdS_cell.Value();
-      CdSAvg += CdS_Value;
-      Sleep(.01);
+        optosensor_left.Value();
+        optosensor_middle.Value();
+        optosensor_right.Value();
     }
-    CdSAvg /= 300;
-    //write value to screen
-    LCD.Clear();
-    LCD.Write("CdS Averaged Value: ");
-    LCD.WriteLine(CdSAvg);
-    Sleep(3.0);
 
-    //move to be in line with correct button, display color to press on screen
-    time = .11;
-    if (CdSAvg <= RED_VALUE)
-    {
-      LCD.SetBackgroundColor(RED);
-      LCD.Clear();
-      LCD.WriteRC("RED", 6, 8);
-      LCD.WriteRC("backRight", 8, 8);
-      
-      moveRobotTime(strength, time, backRight);
-    }
-    else{
-      LCD.SetBackgroundColor(BLUE);
-      LCD.Clear();
-      LCD.WriteRC("BLUE", 6, 8);
-      LCD.WriteRC("backLeft", 8, 8);
-      moveRobotTime(strength, time, backLeft);
-    }
-    Sleep(1.0);
-   
-
-    //push button
-    time = .6;
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-    
-    //Bonus points from here
-   
-    //move back to ramp
-    time = 1.05;
-    moveRobotTime(strength, time, Backward);
-    Sleep(1.0);
-  
-    //turn towards ramp
-    time = NINETY_DEGREE_TURN;
-    turn(strength, time, false);
-    Sleep(1.0);
-  
-    //go down ramp to start area
-    time = 2.16;
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-  
-    //turn towards starting area
-    //this section will make sure the robot hits the stop button if it misses the first time
-    time = NINETY_DEGREE_TURN;
-    turn(strength, time, true);
-    Sleep(1.0);
-  
-    //move into starting area and press button
-    time = .2;
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-    time = NINETY_DEGREE_TURN;
-    turn(strength, time, false);
-    Sleep(1.0);
-    time = .2;
-    moveRobotTime(strength, time, Forward);
-    Sleep(1.0);
-    moveRobotTime(strength, time, Backward);
-    Sleep(1.0);
-    right_motor.Stop();
-    left_motor.Stop();
-    
-   
 /*
   RCS.InitializeTouchMenu("0910B8VYV");
   int lever = RCS.GetLever();
@@ -348,3 +185,4 @@ float actualPower(float desiredPower) {
   return 0;
     
 }
+
