@@ -140,7 +140,7 @@ float actualPower(float desiredPower) {
     // declare constants
     float CdS_Value = 10;
     //for 25 power
-    const float NINETY_DEGREE_TURN = 0.68;
+    const float NINETY_DEGREE_TURN = 0.52;
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     char Forward[] = "forward";
     char Backward[] = "backward";
@@ -160,7 +160,7 @@ float actualPower(float desiredPower) {
     CdS_Value = CdS_cell.Value();
   }
     //Go forward from start area
-    moveRobotTime(50, 2.35, Forward);
+    moveRobotTime(50, 1.95, Forward);
     
     //Turn from start area
     turn(strength, FOURTYFIVE_DEGREE_TURN, false);
@@ -170,7 +170,7 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, 0.2, Forward);
 
     // go back
-    moveRobotTime(50, 0.8, Backward);
+    moveRobotTime(50, 0.65, Backward);
     Sleep(0.2);
 
     //lower tread motor
@@ -179,58 +179,71 @@ float actualPower(float desiredPower) {
     tread_motor.SetPercent(0);
 
     // go back forward
-    moveRobotTime(50, 0.65, Forward);
+    moveRobotTime(50, 0.7, Forward);
 
     //wait
     Sleep(0.2);
 
+    // bring tread motor back up with apple basket
     tread_motor.SetPercent(40);
-    Sleep(0.9);
-    tread_motor.SetPercent(0);
+    Sleep(1.4);
+    // Keep tread motor running on low power to keep apple basket up
+    tread_motor.SetPercent(5);
 
     // go to bottom of ramp
-    moveRobotTime(50, 0.5, backLeft);
+    moveRobotTime(50, 1.0, backLeft);
     moveRobotTime(50, 3.0, Backward);
+
+    // go slightly forward
+    moveRobotTime(50, 0.2, Forward);
 
     // turn to face ramp
     turn(strength, NINETY_DEGREE_TURN, true);
+    Sleep(0.2);
 
     // go up ramp
-    moveRobotTime(100, 2.5, Forward);
+    // give slightly less strength to right motor
+    right_motor.SetPercent(-95);
+    left_motor.SetPercent(100);
+    Sleep(2.5);
+    right_motor.SetPercent(0);
+    left_motor.SetPercent(0);
 
     // use tread to put apple basket down on table
     tread_motor.SetPercent(-40);
-    Sleep(0.2);
+    Sleep(0.3);
     tread_motor.SetPercent(0);
 
     // go backwards slightly
     moveRobotTime(50, 0.5, Backward);
+    Sleep(0.1);
 
     // turn to face buttons
     turn(strength, NINETY_DEGREE_TURN, false);
+    Sleep(0.1);
 
-    // go forward until right optosensor detects <3.0
-    while (optosensor_right.Value() > 3.0)
-    {
-        moveRobot(50, Forward);
-    }
+    // go forward until reaches levers
+    moveRobotTime(50, 2.2, Forward);
 
-    // turn 45 degrees to face levers
-    turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+    // turn 90 degrees to face levers
+    turn(strength, NINETY_DEGREE_TURN, true);
+    Sleep(0.1);
 
-    // go forward a little bit
-    moveRobotTime(50, 0.2, Forward);
+    // go forward 
+    moveRobotTime(50, 1.9, Forward);
+    Sleep(0.1);
 
     // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.6, true);
+    turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+    Sleep(0.1);
 
     // tread push down on lever
-    tread_motor.SetPercent(-40);
-    Sleep(0.5);
+    tread_motor.SetPercent(-60);
+    Sleep(0.8);
     tread_motor.SetPercent(0);
 
     // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.6, true);
+    turn(strength, NINETY_DEGREE_TURN / 3.3, true);
 
     // bring tread down under lever
     tread_motor.SetPercent(-40);
@@ -238,14 +251,14 @@ float actualPower(float desiredPower) {
     tread_motor.SetPercent(0);
 
     // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.6, false);
+    turn(strength, NINETY_DEGREE_TURN / 3.3, false);
 
     // wait five seconds for bonus
     Sleep(5.0);
 
     // bring tread up to pull up lever
-    tread_motor.SetPercent(40);
-    Sleep(0.5);
+    tread_motor.SetPercent(60);
+    Sleep(1.2);
     tread_motor.SetPercent(0);
 
     /*
@@ -258,10 +271,6 @@ float actualPower(float desiredPower) {
         optosensor_right.Value();
     }
         */
-    
-    
-
-
 
   RCS.InitializeTouchMenu("0910B8VYV");
   int lever = RCS.GetLever();
