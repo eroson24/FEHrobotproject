@@ -27,6 +27,13 @@ FEHMotor right_motor(FEHMotor::Motor1,9.0);
 FEHMotor left_motor(FEHMotor::Motor2,9.0);
 FEHMotor back_motor(FEHMotor::Motor3,9.0);
 
+//Declare CdS cell sensor
+AnalogInputPin CdS_cell(FEHIO::P2_0);
+
+// declare optosensors
+AnalogInputPin optosensor_left(FEHIO::P0_0);
+AnalogInputPin optosensor_middle(FEHIO::P0_2);
+AnalogInputPin optosensor_right(FEHIO::P0_7);
 
 void moveRobotTime(int strength, double time, char direction[]) {
 
@@ -83,11 +90,6 @@ void moveRobot(int strength, char direction[]) {
   }
 }
 
-// declare optosensor
-AnalogInputPin optosensor_left(FEHIO::P0_0);
-AnalogInputPin optosensor_middle(FEHIO::P0_2);
-AnalogInputPin optosensor_right(FEHIO::P0_7);
-
 //clockwise is true
 // turn function for robot
 int turn(int strengthPercent, double seconds, bool clockwise) {
@@ -121,8 +123,7 @@ float actualPower(float desiredPower) {
   return actualPower;
   }
   
-  //Declare CdS cell sensor
-  AnalogInputPin CdS_cell(FEHIO::P2_0);
+  
   
   int main(void)
   {
@@ -139,7 +140,7 @@ float actualPower(float desiredPower) {
     // declare constants
     float CdS_Value = 10;
     //for 25 power
-    const float NINETY_DEGREE_TURN = 0.49;
+    const float NINETY_DEGREE_TURN = 0.68;
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     char Forward[] = "forward";
     char Backward[] = "backward";
@@ -157,24 +158,48 @@ float actualPower(float desiredPower) {
     CdS_Value = CdS_cell.Value();
   }
     //Go forward from start area
-    moveRobotTime(50, 1.5, Forward);
+    moveRobotTime(50, 2.35, Forward);
     
     //Turn from start area
     turn(strength, FOURTYFIVE_DEGREE_TURN, false);
     
     //Go forward towards apple basket. Robot should be on black
     // tape after this point. 
-    moveRobotTime(50, 1.0, Forward);
+    moveRobotTime(50, 0.2, Forward);
 
+    // go back
+    moveRobotTime(50, 0.8, Backward);
+    Sleep(0.2);
+
+    //lower tread motor
+    tread_motor.SetPercent(-40);
+    Sleep(0.5);
+    tread_motor.SetPercent(0);
+
+    // go back forward
+    moveRobotTime(50, 0.8, Forward);
+
+    //wait
+    Sleep(0.2);
+
+    tread_motor.SetPercent(40);
+    Sleep(0.9);
+    tread_motor.SetPercent(0);
+
+    // go to bottom of ramp
+    moveRobotTime(50, 0.5, backLeft);
+    moveRobotTime(50, 3.0, Backward);
+
+    /*
     //Begin line following algorithm
-    while (optosensor_left.Value() > 3.325 || optosensor_middle.Value() > 3.325 || optosensor_right.Value() > 3.325)
+    while (optosensor_left.Value() > 3.328 || optosensor_middle.Value() > 3.328 || optosensor_right.Value() > 3.328)
     {
         moveRobot(50, Backward);
-
         optosensor_left.Value();
         optosensor_middle.Value();
         optosensor_right.Value();
     }
+    */
 
 /*
   RCS.InitializeTouchMenu("0910B8VYV");
@@ -185,4 +210,3 @@ float actualPower(float desiredPower) {
   return 0;
     
 }
-
