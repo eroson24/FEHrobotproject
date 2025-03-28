@@ -152,6 +152,8 @@ float actualPower(float desiredPower) {
     float strength = 70;
     double time = 0.5;
 
+
+
   //wait until red light turns on to start
   while (CdS_Value > RED_VALUE)
   {
@@ -177,7 +179,7 @@ float actualPower(float desiredPower) {
     tread_motor.SetPercent(0);
 
     // go back forward
-    moveRobotTime(50, 0.8, Forward);
+    moveRobotTime(50, 0.65, Forward);
 
     //wait
     Sleep(0.2);
@@ -190,6 +192,62 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, 0.5, backLeft);
     moveRobotTime(50, 3.0, Backward);
 
+    // turn to face ramp
+    turn(strength, NINETY_DEGREE_TURN, true);
+
+    // go up ramp
+    moveRobotTime(100, 2.5, Forward);
+
+    // use tread to put apple basket down on table
+    tread_motor.SetPercent(-40);
+    Sleep(0.2);
+    tread_motor.SetPercent(0);
+
+    // go backwards slightly
+    moveRobotTime(50, 0.5, Backward);
+
+    // turn to face buttons
+    turn(strength, NINETY_DEGREE_TURN, false);
+
+    // go forward until right optosensor detects <3.0
+    while (optosensor_right.Value() > 3.0)
+    {
+        moveRobot(50, Forward);
+    }
+
+    // turn 45 degrees to face levers
+    turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+
+    // go forward a little bit
+    moveRobotTime(50, 0.2, Forward);
+
+    // turn approximately 25 degrees to face levers
+    turn(strength, NINETY_DEGREE_TURN / 3.6, true);
+
+    // tread push down on lever
+    tread_motor.SetPercent(-40);
+    Sleep(0.5);
+    tread_motor.SetPercent(0);
+
+    // turn approximately 25 degrees to face levers
+    turn(strength, NINETY_DEGREE_TURN / 3.6, true);
+
+    // bring tread down under lever
+    tread_motor.SetPercent(-40);
+    Sleep(0.5);
+    tread_motor.SetPercent(0);
+
+    // turn approximately 25 degrees to face levers
+    turn(strength, NINETY_DEGREE_TURN / 3.6, false);
+
+    // wait five seconds for bonus
+    Sleep(5.0);
+
+    // bring tread up to pull up lever
+    tread_motor.SetPercent(40);
+    Sleep(0.5);
+    tread_motor.SetPercent(0);
+
     /*
     //Begin line following algorithm
     while (optosensor_left.Value() > 3.328 || optosensor_middle.Value() > 3.328 || optosensor_right.Value() > 3.328)
@@ -199,13 +257,15 @@ float actualPower(float desiredPower) {
         optosensor_middle.Value();
         optosensor_right.Value();
     }
-    */
+        */
+    
+    
 
-/*
+
+
   RCS.InitializeTouchMenu("0910B8VYV");
   int lever = RCS.GetLever();
   LCD.WriteLine(RCS.Time());
-  */
 
   return 0;
     
