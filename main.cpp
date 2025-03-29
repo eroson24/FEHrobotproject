@@ -90,7 +90,6 @@ void moveRobot(int strength, char direction[]) {
   }
 }
 
-//clockwise is true
 // turn function for robot
 int turn(int strengthPercent, double seconds, bool clockwise) {
     if (clockwise) {
@@ -123,15 +122,13 @@ float actualPower(float desiredPower) {
   return actualPower;
   }
   
-  
-  
   int main(void)
   {
-    // declare light sensor input pin
+    // Declare light sensor input pin
     const float RED_VALUE = .1;
     const float BLUE_VALUE = .7;
     
-    //Clear Screen for writing
+    // Clear screen for writing
    
     LCD.SetFontColor(WHITE);
     LCD.Clear();
@@ -152,13 +149,11 @@ float actualPower(float desiredPower) {
     float strength = 70;
     double time = 0.5;
 
-
-
   //wait until red light turns on to start
-  while (CdS_Value > RED_VALUE)
-  {
-    CdS_Value = CdS_cell.Value();
-  }
+    while (CdS_Value > RED_VALUE) {
+        CdS_Value = CdS_cell.Value();
+    }
+
     //Go forward from start area
     moveRobotTime(50, 1.95, Forward);
     
@@ -173,7 +168,7 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, 0.65, Backward);
     Sleep(0.2);
 
-    //lower tread motor
+    // lower tread motor
     tread_motor.SetPercent(-40);
     Sleep(0.5);
     tread_motor.SetPercent(0);
@@ -181,14 +176,14 @@ float actualPower(float desiredPower) {
     // go back forward
     moveRobotTime(50, 0.7, Forward);
 
-    //wait
+    // wait
     Sleep(0.2);
 
     // bring tread motor back up with apple basket
     tread_motor.SetPercent(40);
-    Sleep(1.4);
-    // Keep tread motor running on low power to keep apple basket up
-    tread_motor.SetPercent(5);
+    Sleep(1.2);
+    // keep tread motor running on low power to keep apple basket up
+    tread_motor.SetPercent(10);
 
     // go to bottom of ramp
     moveRobotTime(50, 1.0, backLeft);
@@ -211,11 +206,11 @@ float actualPower(float desiredPower) {
 
     // use tread to put apple basket down on table
     tread_motor.SetPercent(-40);
-    Sleep(0.3);
+    Sleep(0.32);
     tread_motor.SetPercent(0);
 
     // go backwards slightly
-    moveRobotTime(50, 0.5, Backward);
+    moveRobotTime(50, 0.7, Backward);
     Sleep(0.1);
 
     // turn to face buttons
@@ -223,18 +218,14 @@ float actualPower(float desiredPower) {
     Sleep(0.1);
 
     // go forward until reaches levers
-    moveRobotTime(50, 2.2, Forward);
+    moveRobotTime(50, 1.8, Forward);
 
     // turn 90 degrees to face levers
     turn(strength, NINETY_DEGREE_TURN, true);
     Sleep(0.1);
 
     // go forward 
-    moveRobotTime(50, 1.9, Forward);
-    Sleep(0.1);
-
-    // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+    moveRobotTime(50, 1.8, Forward);
     Sleep(0.1);
 
     // tread push down on lever
@@ -243,7 +234,7 @@ float actualPower(float desiredPower) {
     tread_motor.SetPercent(0);
 
     // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+    turn(strength, NINETY_DEGREE_TURN / 2.0, true);
 
     // bring tread down under lever
     tread_motor.SetPercent(-40);
@@ -251,7 +242,7 @@ float actualPower(float desiredPower) {
     tread_motor.SetPercent(0);
 
     // turn approximately 25 degrees to face levers
-    turn(strength, NINETY_DEGREE_TURN / 3.3, false);
+    turn(strength, NINETY_DEGREE_TURN / 2.0, false);
 
     // wait five seconds for bonus
     Sleep(5.0);
@@ -272,9 +263,11 @@ float actualPower(float desiredPower) {
     }
         */
 
-  RCS.InitializeTouchMenu("0910B8VYV");
-  int lever = RCS.GetLever();
-  LCD.WriteLine(RCS.Time());
+        /*
+        RCS.InitializeTouchMenu("0910B8VYV");
+        int lever = RCS.GetLever();
+        LCD.WriteLine(RCS.Time());
+        */
 
   return 0;
     
