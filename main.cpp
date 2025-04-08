@@ -137,6 +137,8 @@ float actualPower(float desiredPower) {
    
     LCD.SetFontColor(WHITE);
     LCD.Clear();
+    
+    //RCS.InitializeTouchMenu("0910B8VYV");
     Sleep(.1);
    
     // declare constants
@@ -154,11 +156,10 @@ float actualPower(float desiredPower) {
     char backLeft[] = "backLeft";
     float x, y;
     float strength = 70;
-    double time = 0.5;
+    
+  //For tread: positive value is up (clockwise)  
 
-
-     
-
+  //Start
   
   //wait until red light turns on to start
   while (CdS_Value > RED_VALUE)
@@ -181,16 +182,16 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to be in line with bin grips
-  moveRobotTime(50, 1.1, Forward);
-  Sleep(.2);
+  moveRobotTime(50, 1.35, Forward);
+  Sleep(.05);
 
   //turn to face bin
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
 
   //move to bin
-  moveRobotTime(20, 2.4, Forward);
-  Sleep(.2);
+  moveRobotTime(20, 2.5, Forward);
+  Sleep(.05);
 
   //rotate bin clockwise
   tread_motor.SetPercent(-50);
@@ -208,8 +209,9 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
   Sleep(.05);
 
-   //move back
-  moveRobotTime(20, .5, Forward);
+  //move to bin
+  moveRobotTime(20, .7, Forward);
+  Sleep(.05);
 
   //rotate bin clockwise
   tread_motor.SetPercent(-50);
@@ -233,16 +235,149 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
   Sleep(.05);
 
-  //move back
+  //move to bin
+  moveRobotTime(20, .7, Forward);
+  Sleep(.05);
+  
+  //rotate bin counterclockwise
+  tread_motor.SetPercent(50);
+  Sleep(1.5);
+  tread_motor.SetPercent(0);
+  Sleep(.05);
+
+  
+  //Apple Bucket Table
+
+
+  // move a little back left so robot doesn't bump into stump
+  moveRobotTime(50, .5, backLeft);
+
+  //move away from bin until center is in line with basket
+  moveRobotTime(50, 1.05, Backward);
+  Sleep(.05);
+
+  //turn to face basket
+  turn(strength, NINETY_DEGREE_TURN, true);
+  Sleep(.05);
+
+  //back up a little bit
+  moveRobotTime(50, 0.3, Backward);
+  Sleep(.05);
+
+  //lower tread motor
+  tread_motor.SetPercent(-40);
+  Sleep(2.75);    
+  tread_motor.SetPercent(0);
+
+  //move to basket
+  moveRobotTime(50, 0.5, Forward);
+  Sleep(.05);
+
+  //bring tread motor back up with apple basket
+  tread_motor.SetPercent(40);
+  Sleep(1.2);
+
+  //keep tread motor running on low power to keep apple basket up
+  tread_motor.SetPercent(10);
+
+  // go to bottom of ramp
+  moveRobotTime(50, 1.0, backLeft);
+  moveRobotTime(50, 3.0, Backward);
+  Sleep(.05);
+
+  // go slightly forward
+  moveRobotTime(50, 0.2, Forward);
+  Sleep(.05);
+
+  // turn to face ramp
+  turn(strength, NINETY_DEGREE_TURN, true);
+  Sleep(0.2);
+
+  // go up ramp
+  // give slightly less strength to right motor
+  right_motor.SetPercent(-95);
+  left_motor.SetPercent(100);
+  Sleep(2.5);
+  right_motor.SetPercent(0);
+  left_motor.SetPercent(0);
+
+  // use tread to put apple basket down on table
+  tread_motor.SetPercent(-20);
+  Sleep(0.64);
+  tread_motor.SetPercent(0);
+
+  Sleep(1.0);
+
+  /*
+  //Apple Bucket Crate
+
+  //bring tread motor back up with apple basket
+  tread_motor.SetPercent(40);
+  Sleep(.5);
+  //keep tread motor running on low power to keep apple basket up
+  tread_motor.SetPercent(10);
+
+  //move back left to be in line with crate
+  moveRobotTime(50, .5, backLeft);
+  Sleep(.05);
+
+  //move forward to crate
+  moveRobotTime(50, 2.0, Forward);
+  Sleep(.05);
+
+  // use tread to put apple basket down on crate
+  tread_motor.SetPercent(-20);
+  Sleep(2.0);
+  tread_motor.SetPercent(0);
+   
+  // go backwards slightly
+  moveRobotTime(50, .3, Backward);
+  Sleep(0.1);
+ 
+  //put hook facing back
+  tread_motor.SetPercent(60);
+  Sleep(2.5);
+  tread_motor.SetPercent(0);
+
+  //Window
+
+  //turn around
+  turn(strength, NINETY_DEGREE_TURN * 2, false);
+  Sleep(.05);
+
+  //move to be in line with humidifier
+  moveRobotTime(50, 1.0, Forward);
+  Sleep(.05);
+
+  //turn to face window
+  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+  Sleep(.05);
+
+  //go forward to window
+  moveRobotTime(50, 1.0, Forward);
+  Sleep(.05);
+
+  //once touching handle, turn to go straight
+  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+  Sleep(.05);
+
+  //open window fully
   moveRobotTime(50, .5, Forward);
-  
-  //rotate bin counterclockwise
-  tread_motor.SetPercent(50);
-  Sleep(1.5);
-  tread_motor.SetPercent(0);
-  Sleep(.3);
+  Sleep(.05);
 
-  //move back
+  //move backright from window slightly
+  moveRobotTime(50, .2, backRight);
+  Sleep(.05);
+
+  //go forward slightly
+  moveRobotTime(50, .5, Forward);
+  Sleep(.05);
+
+  //move backleft to window slightly
+  moveRobotTime(50, .2, backRight);
+  Sleep(.05);
+
+  //close window
   moveRobotTime(50, .5, Backward);
   Sleep(.05);
 
@@ -281,12 +416,63 @@ float actualPower(float desiredPower) {
 
   //turn to face humidifier buttons
   turn(strength, NINETY_DEGREE_TURN, false);
+  Sleep(.05);
 
-  //move to start
-  moveRobotTime(50, 1.43, Forward);
+  //this next part will be an experiment, the robot should go backward until the middle optosensor no longer detects the black line
+  //it would then go forward
+  //with this method, the value for moving to be over the humidifier light should be consistent
+  //there is a decent chance this will not work
 
-  //turn towards button
-  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+  //move backward until mid opto sensor does not detect black line
+  //move back
+  moveRobot(30, Forward);
+
+  //move backward until mid opto sensor does not detect black line
+  while (midOpto > MAXGRAYFLOOR){
+    leftOpto = optosensor_left.Value();
+    midOpto = optosensor_middle.Value();
+    rightOpto = optosensor_right.Value();
+  }
+
+  //stop when optosensors detect the gray floor
+  right_motor.Stop();
+  left_motor.Stop();
+  Sleep(.05);
+
+  //move forward to be over humidifier light
+  moveRobotTime(50, 1.0, Forward);
+  Sleep(.05);
+
+  //takes average of CdS cell values
+  float CdSAvg = 0;
+  for (int i = 0; i <= 300; i++ ){
+    CdS_Value = CdS_cell.Value();
+    CdSAvg += CdS_Value;
+    Sleep(.01);
+   }
+  CdSAvg /= 300;
+  //write value to screen
+  LCD.Clear();
+  LCD.Write("CdS Averaged Value: ");
+  LCD.WriteLine(CdSAvg);
+  Sleep(.5);
+
+  //move to be in line with correct button, display color to press on screen
+   
+  if (CdSAvg <= RED_VALUE)
+  {
+    LCD.SetBackgroundColor(RED);
+    LCD.Clear();
+    LCD.WriteRC("RED", 6, 8);
+    moveRobotTime(strength, .11, backRight);
+  }
+  else {
+    LCD.SetBackgroundColor(BLUE);
+    LCD.Clear();
+    LCD.WriteRC("BLUE", 6, 8);
+    moveRobotTime(strength, .11, backLeft);
+  }
+  Sleep(.5);
 
   //push button
   moveRobotTime(strength, .6, Forward);
