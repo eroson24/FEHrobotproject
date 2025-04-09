@@ -146,7 +146,7 @@ float actualPower(float desiredPower) {
     //declare optosensor variables
     float leftOpto = -1, midOpto = -1, rightOpto = -1;
     //for 25 power
-    const float NINETY_DEGREE_TURN = 0.5;
+    const float NINETY_DEGREE_TURN = 0.49;
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     const float MAXGRAYFLOOR = 3.3;
     
@@ -257,7 +257,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //turn to face basket
-  turn(strength, NINETY_DEGREE_TURN, true);
+  turn(strength, NINETY_DEGREE_TURN * 0.96, true);
   Sleep(.05);
 
   //back up a little bit
@@ -266,7 +266,7 @@ float actualPower(float desiredPower) {
 
   //lower tread motor
   tread_motor.SetPercent(-40);
-  Sleep(2.75);    
+  Sleep(2.6);    
   tread_motor.SetPercent(0);
 
   //move to basket
@@ -275,10 +275,10 @@ float actualPower(float desiredPower) {
 
   //bring tread motor back up with apple basket
   tread_motor.SetPercent(40);
-  Sleep(1.2);
+  Sleep(0.7);
 
   //keep tread motor running on low power to keep apple basket up
-  tread_motor.SetPercent(10);
+  tread_motor.SetPercent(15);
 
   // go to bottom of ramp
   moveRobotTime(50, 1.0, backLeft);
@@ -295,11 +295,15 @@ float actualPower(float desiredPower) {
 
   // go up ramp
   // give slightly less strength to right motor
-  right_motor.SetPercent(-95);
+  right_motor.SetPercent(-90);
   left_motor.SetPercent(100);
   Sleep(2.5);
   right_motor.SetPercent(0);
   left_motor.SetPercent(0);
+
+  //turn slightly to the right
+  turn(strength, NINETY_DEGREE_TURN * (2.0 / 9.0), true);
+  Sleep(.05);
 
   // use tread to put apple basket down on table
   tread_motor.SetPercent(-20);
@@ -308,7 +312,6 @@ float actualPower(float desiredPower) {
 
   Sleep(1.0);
 
-  /*
   //Apple Bucket Crate
 
   //bring tread motor back up with apple basket
@@ -317,17 +320,23 @@ float actualPower(float desiredPower) {
   //keep tread motor running on low power to keep apple basket up
   tread_motor.SetPercent(10);
 
+  //move back a little bit
+  moveRobotTime(50, 0.2, Backward);
+
   //move back left to be in line with crate
-  moveRobotTime(50, .5, backLeft);
+  moveRobotTime(50, 0.8, backLeft);
   Sleep(.05);
 
   //move forward to crate
-  moveRobotTime(50, 2.0, Forward);
+  moveRobotTime(50, 3.2, Forward);
   Sleep(.05);
+
+  // back up a little bit
+  moveRobotTime(50, 0.2, Backward);
 
   // use tread to put apple basket down on crate
   tread_motor.SetPercent(-20);
-  Sleep(2.0);
+  Sleep(2.8);
   tread_motor.SetPercent(0);
    
   // go backwards slightly
@@ -335,10 +344,11 @@ float actualPower(float desiredPower) {
   Sleep(0.1);
  
   //put hook facing back
-  tread_motor.SetPercent(60);
-  Sleep(2.5);
+  tread_motor.SetPercent(45);
+  Sleep(2.0);
   tread_motor.SetPercent(0);
 
+  
   //Window
 
   //turn around
@@ -346,7 +356,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to be in line with humidifier
-  moveRobotTime(50, 1.0, Forward);
+  moveRobotTime(50, 1.2, Forward);
   Sleep(.05);
 
   //turn to face window
@@ -354,7 +364,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go forward to window
-  moveRobotTime(50, 1.0, Forward);
+  moveRobotTime(50, 0.9, Forward);
   Sleep(.05);
 
   //once touching handle, turn to go straight
@@ -366,19 +376,19 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move backright from window slightly
-  moveRobotTime(50, .2, backRight);
+  moveRobotTime(50, .35, backRight);
   Sleep(.05);
 
   //go forward slightly
-  moveRobotTime(50, .5, Forward);
+  moveRobotTime(50, 1.0, Forward);
   Sleep(.05);
 
   //move backleft to window slightly
-  moveRobotTime(50, .2, backRight);
+  moveRobotTime(50, .35, backLeft);
   Sleep(.05);
 
   //close window
-  moveRobotTime(50, .5, Backward);
+  moveRobotTime(50, 1.0, Backward);
   Sleep(.05);
 
   //go forward slightly
@@ -389,6 +399,7 @@ float actualPower(float desiredPower) {
   moveRobotTime(50, .2, backRight);
   Sleep(.05);
 
+  /*
   //Humidifier
 
   //turn to face humidifier black line
