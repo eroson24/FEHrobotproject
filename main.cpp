@@ -84,11 +84,11 @@ void moveRobot(int strength, char direction[]) {
   //move back left for time
   else if (strcmp(direction, "backLeft") == 0){
     left_motor.SetPercent(-strength);
-    back_motor.SetPercent(-strength);
+    back_motor.SetPercent(strength);
   }
   else if (strcmp(direction, "backward") == 0){
-    left_motor.SetPercent(-strength);
     right_motor.SetPercent(strength);
+    left_motor.SetPercent(-strength);
   }
 }
 
@@ -159,6 +159,7 @@ float actualPower(float desiredPower) {
     
   //For tread: positive value is up (clockwise)  
 
+  /*
   //Start
   
   //wait until red light turns on to start
@@ -275,7 +276,7 @@ float actualPower(float desiredPower) {
 
   //bring tread motor back up with apple basket
   tread_motor.SetPercent(40);
-  Sleep(0.7);
+  Sleep(0.75);
 
   //keep tread motor running on low power to keep apple basket up
   tread_motor.SetPercent(15);
@@ -302,7 +303,7 @@ float actualPower(float desiredPower) {
   left_motor.SetPercent(0);
 
   //turn slightly to the right
-  turn(strength, NINETY_DEGREE_TURN * (2.0 / 9.0), true);
+  turn(strength, NINETY_DEGREE_TURN * (1.9 / 9.0), true);
   Sleep(.05);
 
   // use tread to put apple basket down on table
@@ -312,16 +313,24 @@ float actualPower(float desiredPower) {
 
   Sleep(1.0);
 
-  //Apple Bucket Crate
-
-  //bring tread motor back up with apple basket
-  tread_motor.SetPercent(40);
-  Sleep(.5);
-  //keep tread motor running on low power to keep apple basket up
-  tread_motor.SetPercent(10);
-
   //move back a little bit
-  moveRobotTime(50, 0.2, Backward);
+  moveRobotTime(50, 0.4, Backward);
+
+  //put hook facing back
+  tread_motor.SetPercent(45);
+  Sleep(2.0);
+  tread_motor.SetPercent(0);
+
+  //rotate 90 degrees counterclockwise
+  turn(strength, NINETY_DEGREE_TURN, false);
+
+  //move back to align with wall
+  moveRobotTime(50, 1.3, Backward);
+  Sleep(0.5);
+
+  /*
+  //Apple Bucket Crate
+  
 
   //move back left to be in line with crate
   moveRobotTime(50, 0.8, backLeft);
@@ -342,29 +351,20 @@ float actualPower(float desiredPower) {
   // go backwards slightly
   moveRobotTime(50, .3, Backward);
   Sleep(0.1);
- 
-  //put hook facing back
-  tread_motor.SetPercent(45);
-  Sleep(2.0);
-  tread_motor.SetPercent(0);
-
   
+
   //Window
 
-  //turn around
-  turn(strength, NINETY_DEGREE_TURN * 2, false);
-  Sleep(.05);
-
-  //move to be in line with humidifier
-  moveRobotTime(50, 1.2, Forward);
+  // go forward a little bit
+  moveRobotTime(50, 1.0, Forward);
   Sleep(.05);
 
   //turn to face window
-  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
   Sleep(.05);
 
   //go forward to window
-  moveRobotTime(50, 0.9, Forward);
+  moveRobotTime(50, 1.1, Forward);
   Sleep(.05);
 
   //once touching handle, turn to go straight
@@ -372,7 +372,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //open window fully
-  moveRobotTime(50, .5, Forward);
+  moveRobotTime(50, .6, Forward);
   Sleep(.05);
 
   //move backright from window slightly
@@ -399,18 +399,21 @@ float actualPower(float desiredPower) {
   moveRobotTime(50, .2, backRight);
   Sleep(.05);
 
-  /*
+  
   //Humidifier
 
-  //turn to face humidifier black line
-  turn(strength, NINETY_DEGREE_TURN, true);
-  Sleep(.05);
+  // move backwards a little to line up with black line
+  moveRobotTime(50, 0.3, Backward);
 
-  //move forward
-  moveRobot(30, Forward);
+  //turn to face humidifier black line
+  turn(strength, NINETY_DEGREE_TURN, false);
+  Sleep(.05);
+  */
+  //move backward
+  moveRobot(30, "backward");
 
   //move forward until optosensors detect the black line
-  while (leftOpto < MAXGRAYFLOOR && midOpto < MAXGRAYFLOOR && rightOpto < MAXGRAYFLOOR){
+  while (leftOpto < MAXGRAYFLOOR || midOpto < MAXGRAYFLOOR || rightOpto < MAXGRAYFLOOR){
     leftOpto = optosensor_left.Value();
     midOpto = optosensor_middle.Value();
     rightOpto = optosensor_right.Value();
@@ -426,7 +429,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //turn to face humidifier buttons
-  turn(strength, NINETY_DEGREE_TURN, false);
+  turn(strength, NINETY_DEGREE_TURN, true);
   Sleep(.05);
 
   //this next part will be an experiment, the robot should go backward until the middle optosensor no longer detects the black line
@@ -435,14 +438,12 @@ float actualPower(float desiredPower) {
   //there is a decent chance this will not work
 
   //move backward until mid opto sensor does not detect black line
-  //move back
-  moveRobot(30, Forward);
+  //move forward
+  moveRobot(30, Backward);
 
   //move backward until mid opto sensor does not detect black line
   while (midOpto > MAXGRAYFLOOR){
-    leftOpto = optosensor_left.Value();
     midOpto = optosensor_middle.Value();
-    rightOpto = optosensor_right.Value();
   }
 
   //stop when optosensors detect the gray floor
@@ -489,6 +490,7 @@ float actualPower(float desiredPower) {
   moveRobotTime(strength, .6, Forward);
   Sleep(.2);
 
+  /*
   //Fertilizer Levers
 
   // Get lever from the RCS
