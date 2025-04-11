@@ -521,7 +521,7 @@ float actualPower(float desiredPower) {
   //Go back to start
 
   //move backward to be approximately in line with humidifier
-  moveRobotTime(50, 2.0, backward);
+  moveRobotTime(50, 1.6, backward);
   Sleep(.05);
 
   //turn to face humidifier
