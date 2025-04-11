@@ -62,6 +62,16 @@ void moveRobotTime(int strength, double time, char direction[]) {
     left_motor.SetPercent(-strength);
     Sleep(time);
   }
+  else if (strcmp(direction, "frontRight") == 0){
+    back_motor.SetPercent(-strength);
+    left_motor.SetPercent(strength);
+    Sleep(time);
+  }
+  else if (strcmp(direction, "frontLeft") == 0){
+    back_motor.SetPercent(strength);
+    right_motor.SetPercent(-strength);
+    Sleep(time);
+  }
     //Turn off motors
     right_motor.Stop();
     left_motor.Stop();
@@ -125,8 +135,6 @@ float actualPower(float desiredPower) {
   return actualPower;
   }
   
-  
-  
   int main(void)
   {
     // declare light sensor input pin
@@ -138,7 +146,7 @@ float actualPower(float desiredPower) {
     LCD.SetFontColor(WHITE);
     LCD.Clear();
     
-    //RCS.InitializeTouchMenu("0910B8VYV");
+    RCS.InitializeTouchMenu("0910B8VYV");
     Sleep(.1);
    
     // declare constants
@@ -150,16 +158,17 @@ float actualPower(float desiredPower) {
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     const float MAXGRAYFLOOR = 3.3;
     
-    char Forward[] = "forward";
-    char Backward[] = "backward";
+    char forward[] = "forward";
+    char backward[] = "backward";
     char backRight[] = "backRight";
     char backLeft[] = "backLeft";
+    char frontLeft[] = "frontLeft";
+    char frontRight[] = "frontRight";
     float x, y;
     float strength = 70;
     
   //For tread: positive value is up (clockwise)  
-
-  /*
+  
   //Start
   
   //wait until red light turns on to start
@@ -167,15 +176,15 @@ float actualPower(float desiredPower) {
   {
     CdS_Value = CdS_cell.Value();
   }
-
+  
   //push start button
-  moveRobotTime(20, .5, Backward);
+  moveRobotTime(20, .5, backward);
   Sleep(.2);
 
   //Compost Bin
    
   //go forward from start area
-  moveRobotTime(50, 1.0, Forward);
+  moveRobotTime(50, 1.0, forward);
   Sleep(.05);
 
   //turn to be parallel to bin
@@ -183,7 +192,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to be in line with bin grips
-  moveRobotTime(50, 1.35, Forward);
+  moveRobotTime(50, 1.35, forward);
   Sleep(.05);
 
   //turn to face bin
@@ -191,7 +200,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to bin
-  moveRobotTime(20, 2.5, Forward);
+  moveRobotTime(20, 2.5, forward);
   Sleep(.05);
 
   //rotate bin clockwise
@@ -201,7 +210,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move away from bin
-  moveRobotTime(20, .5, Backward);
+  moveRobotTime(20, .5, backward);
   Sleep(.05);
 
   //reset tread
@@ -211,7 +220,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to bin
-  moveRobotTime(20, .7, Forward);
+  moveRobotTime(20, .7, forward);
   Sleep(.05);
 
   //rotate bin clockwise
@@ -227,7 +236,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move away from bin
-  moveRobotTime(20, .5, Backward);
+  moveRobotTime(20, .5, backward);
   Sleep(.05);
 
   //reset tread
@@ -237,7 +246,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to bin
-  moveRobotTime(20, .7, Forward);
+  moveRobotTime(20, .7, forward);
   Sleep(.05);
   
   //rotate bin counterclockwise
@@ -254,7 +263,7 @@ float actualPower(float desiredPower) {
   moveRobotTime(50, .5, backLeft);
 
   //move away from bin until center is in line with basket
-  moveRobotTime(50, 1.05, Backward);
+  moveRobotTime(50, 1.05, backward);
   Sleep(.05);
 
   //turn to face basket
@@ -262,16 +271,16 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //back up a little bit
-  moveRobotTime(50, 0.3, Backward);
+  moveRobotTime(50, 0.3, backward);
   Sleep(.05);
 
   //lower tread motor
   tread_motor.SetPercent(-40);
-  Sleep(2.6);    
+  Sleep(2.65);    
   tread_motor.SetPercent(0);
 
   //move to basket
-  moveRobotTime(50, 0.5, Forward);
+  moveRobotTime(50, 0.5, forward);
   Sleep(.05);
 
   //bring tread motor back up with apple basket
@@ -283,11 +292,11 @@ float actualPower(float desiredPower) {
 
   // go to bottom of ramp
   moveRobotTime(50, 1.0, backLeft);
-  moveRobotTime(50, 3.0, Backward);
+  moveRobotTime(50, 3.0, backward);
   Sleep(.05);
 
   // go slightly forward
-  moveRobotTime(50, 0.2, Forward);
+  moveRobotTime(50, 0.2, forward);
   Sleep(.05);
 
   // turn to face ramp
@@ -314,7 +323,7 @@ float actualPower(float desiredPower) {
   Sleep(1.0);
 
   //move back a little bit
-  moveRobotTime(50, 0.4, Backward);
+  moveRobotTime(50, 0.35, backward);
 
   //put hook facing back
   tread_motor.SetPercent(45);
@@ -325,12 +334,11 @@ float actualPower(float desiredPower) {
   turn(strength, NINETY_DEGREE_TURN, false);
 
   //move back to align with wall
-  moveRobotTime(50, 1.3, Backward);
+  moveRobotTime(50, 1.3, backward);
   Sleep(0.5);
 
   /*
   //Apple Bucket Crate
-  
 
   //move back left to be in line with crate
   moveRobotTime(50, 0.8, backLeft);
@@ -351,70 +359,23 @@ float actualPower(float desiredPower) {
   // go backwards slightly
   moveRobotTime(50, .3, Backward);
   Sleep(0.1);
-  
+*/
 
-  //Window
-
-  // go forward a little bit
-  moveRobotTime(50, 1.0, Forward);
-  Sleep(.05);
-
-  //turn to face window
-  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
-  Sleep(.05);
-
-  //go forward to window
-  moveRobotTime(50, 1.1, Forward);
-  Sleep(.05);
-
-  //once touching handle, turn to go straight
-  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
-  Sleep(.05);
-
-  //open window fully
-  moveRobotTime(50, .6, Forward);
-  Sleep(.05);
-
-  //move backright from window slightly
-  moveRobotTime(50, .35, backRight);
-  Sleep(.05);
-
-  //go forward slightly
-  moveRobotTime(50, 1.0, Forward);
-  Sleep(.05);
-
-  //move backleft to window slightly
-  moveRobotTime(50, .35, backLeft);
-  Sleep(.05);
-
-  //close window
-  moveRobotTime(50, 1.0, Backward);
-  Sleep(.05);
-
-  //go forward slightly
-  moveRobotTime(50, .5, Forward);
-  Sleep(.05);
-
-  //move backright from window slightly
-  moveRobotTime(50, .2, backRight);
-  Sleep(.05);
-
-  
   //Humidifier
 
-  // move backwards a little to line up with black line
-  moveRobotTime(50, 0.3, Backward);
-
-  //turn to face humidifier black line
-  turn(strength, NINETY_DEGREE_TURN, false);
+  //go foward to cds cell
+  moveRobotTime(50, 1.85, forward);
   Sleep(.05);
-  */
+
+  //turn backwards
+  turn(strength, NINETY_DEGREE_TURN * 2, true);
+  
+  /*
   //move backward
-  moveRobot(30, "backward");
+  moveRobot(30, backward);
 
   //move forward until optosensors detect the black line
-  while (leftOpto < MAXGRAYFLOOR || midOpto < MAXGRAYFLOOR || rightOpto < MAXGRAYFLOOR){
-    leftOpto = optosensor_left.Value();
+  while (midOpto < MAXGRAYFLOOR || rightOpto < MAXGRAYFLOOR){
     midOpto = optosensor_middle.Value();
     rightOpto = optosensor_right.Value();
   }
@@ -424,45 +385,19 @@ float actualPower(float desiredPower) {
   left_motor.Stop();
   Sleep(.05);
 
-  //move forward so center of robot is over black line
-  moveRobotTime(50, .3, Forward);
-  Sleep(.05);
-
-  //turn to face humidifier buttons
-  turn(strength, NINETY_DEGREE_TURN, true);
-  Sleep(.05);
-
-  //this next part will be an experiment, the robot should go backward until the middle optosensor no longer detects the black line
-  //it would then go forward
-  //with this method, the value for moving to be over the humidifier light should be consistent
-  //there is a decent chance this will not work
-
-  //move backward until mid opto sensor does not detect black line
-  //move forward
-  moveRobot(30, Backward);
-
-  //move backward until mid opto sensor does not detect black line
-  while (midOpto > MAXGRAYFLOOR){
-    midOpto = optosensor_middle.Value();
-  }
-
-  //stop when optosensors detect the gray floor
-  right_motor.Stop();
-  left_motor.Stop();
-  Sleep(.05);
-
-  //move forward to be over humidifier light
-  moveRobotTime(50, 1.0, Forward);
-  Sleep(.05);
+    //move forward so center of robot is over black line
+  moveRobotTime(50, .3, forward);
+*/
 
   //takes average of CdS cell values
   float CdSAvg = 0;
-  for (int i = 0; i <= 300; i++ ){
+  for (int i = 0; i < 300; i++){
     CdS_Value = CdS_cell.Value();
     CdSAvg += CdS_Value;
     Sleep(.01);
    }
   CdSAvg /= 300;
+
   //write value to screen
   LCD.Clear();
   LCD.Write("CdS Averaged Value: ");
@@ -476,23 +411,23 @@ float actualPower(float desiredPower) {
     LCD.SetBackgroundColor(RED);
     LCD.Clear();
     LCD.WriteRC("RED", 6, 8);
-    moveRobotTime(strength, .11, backRight);
+    moveRobotTime(strength, .11, frontLeft);
   }
   else {
     LCD.SetBackgroundColor(BLUE);
     LCD.Clear();
     LCD.WriteRC("BLUE", 6, 8);
-    moveRobotTime(strength, .11, backLeft);
+    moveRobotTime(strength, .11, frontRight);
   }
   Sleep(.5);
 
   //push button
-  moveRobotTime(strength, .6, Forward);
+  moveRobotTime(strength, 2.0, backward);
   Sleep(.2);
 
-  /*
   //Fertilizer Levers
 
+  /*
   // Get lever from the RCS
   int lever = RCS.GetLever();
   float backToLeverTime = 0;
@@ -520,19 +455,24 @@ float actualPower(float desiredPower) {
     LCD.WriteRC("C", 6, 8);
   }
   Sleep(.2);
+  
 
   //move back to be parallel to correct lever location
-  moveRobotTime(50, backToLeverTime, Backward);
+  moveRobotTime(50, backToLeverTime, backward);
   Sleep(.05);
+  */
 
+  //move forward to be parallel to lever location
+  moveRobotTime(50, .7, forward);
+  Sleep(.05);
   //more code might need to be added for lever A since it is quite close to the wall
 
   //face levers
-  turn(strength, NINETY_DEGREE_TURN, true);
+  turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
 
   // go forward 
-  moveRobotTime(50, 1.9, Forward);
+  moveRobotTime(50, 1.9, forward);
   Sleep(.05);
 
   // turn approximately 25 degrees to face levers
@@ -541,7 +481,7 @@ float actualPower(float desiredPower) {
 
   // tread push down on lever
   tread_motor.SetPercent(-60);
-  Sleep(2.0);
+  Sleep(2.3);
   tread_motor.SetPercent(0);
 
   // turn approximately 25 degrees to move hook under lever
@@ -550,7 +490,7 @@ float actualPower(float desiredPower) {
 
   // bring tread down under lever
   tread_motor.SetPercent(-40);
-  Sleep(0.5);
+  Sleep(0.4);
   tread_motor.SetPercent(0);
 
   // turn approximately 25 degrees to face levers
@@ -561,7 +501,7 @@ float actualPower(float desiredPower) {
 
   // bring tread up to pull up lever
   tread_motor.SetPercent(60);
-  Sleep(1.2);
+  Sleep(0.9);
   tread_motor.SetPercent(0);
 
   // turn approximately 25 degrees to move hook under lever
@@ -570,7 +510,7 @@ float actualPower(float desiredPower) {
 
   // bring tread up, it is no longer needed
   tread_motor.SetPercent(-40);
-  Sleep(0.5);
+  Sleep(1.5);
   tread_motor.SetPercent(0);
 
   // turn approximately 50 degrees to align straight again
@@ -581,7 +521,7 @@ float actualPower(float desiredPower) {
   //Go back to start
 
   //move backward to be approximately in line with humidifier
-  moveRobotTime(50, 2.0, Backward);
+  moveRobotTime(50, 2.0, backward);
   Sleep(.05);
 
   //turn to face humidifier
@@ -589,11 +529,89 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to back wall to align robot straight
-  moveRobotTime(50, 1.5, Backward);
+  moveRobotTime(50, 1.5, backward);
   Sleep(.05);
 
-  //move slightly forward
-  moveRobotTime(50, .2, Forward);
+  //move forward a little bit
+  moveRobotTime(50, 0.2, forward);
+  Sleep(.05);
+
+  //turn to align with table
+  turn(strength, NINETY_DEGREE_TURN, true);
+  Sleep(.05);
+
+  //go to table
+  moveRobotTime(50, 1.0, forward);
+  Sleep(.05);
+
+  //move back a little bit
+  moveRobotTime(50, 0.4, backward);
+  Sleep(.05);
+
+  //rotate 90 degrees counterclockwise
+  turn(strength, NINETY_DEGREE_TURN, false);
+  Sleep(.05);
+
+  //move back to align with wall
+  moveRobotTime(50, 1.3, backward);
+  Sleep(0.5);
+
+  //Window
+
+  // go forward a little bit
+  moveRobotTime(50, 1.0, forward);
+  Sleep(.05);
+
+  //turn to face window
+  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
+  Sleep(.05);
+
+  //go forward to window
+  moveRobotTime(50, 1.1, forward);
+  Sleep(.05);
+
+  //once touching handle, turn to go straight
+  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
+  Sleep(.05);
+
+  //backleft a little to make sure B8 is in line with handle
+  moveRobotTime(50, .2, backLeft);
+  Sleep(.05);
+
+  //open window fully
+  moveRobotTime(50, 0.8, forward);
+  Sleep(.05);
+
+  //move backright from window slightly
+  moveRobotTime(50, .35, backRight);
+  Sleep(.05);
+
+  //go forward slightly
+  moveRobotTime(50, 1.0, forward);
+  Sleep(.05);
+
+  //move backleft to window slightly
+  moveRobotTime(50, .35, backLeft);
+  Sleep(.05);
+
+  //close window
+  moveRobotTime(50, 1.2, backward);
+  Sleep(.05);
+
+  //go forward slightly
+  moveRobotTime(50, .5, forward);
+  Sleep(.05);
+
+  //move backright from window slightly
+  moveRobotTime(50, .2, backRight);
+  Sleep(.05);
+
+  //move backward to align with wall
+  moveRobotTime(50, 1.2, backward);
+  Sleep(.05);
+
+  //go forward slightly
+  moveRobotTime(50, .3, forward);
   Sleep(.05);
 
   //turn to face ramp
@@ -601,12 +619,12 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go down ramp and hit button
-  moveRobotTime(50, 2.0, Forward);
+  moveRobotTime(50, 2.0, forward);
   Sleep(.05);
-  moveRobotTime(50, .5, Backward);
+  moveRobotTime(50, .5, backward);
 
   //done; Woo-Hoo!!!
 
   return 0;
-  */
+  
 }
