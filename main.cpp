@@ -315,6 +315,10 @@ float actualPower(float desiredPower) {
   turn(strength, NINETY_DEGREE_TURN * (1.9 / 9.0), true);
   Sleep(.05);
 
+  //be straight on table
+  moveRobotTime(50, 0.5, forward);
+  Sleep(.05);
+
   // use tread to put apple basket down on table
   tread_motor.SetPercent(-20);
   Sleep(0.64);
@@ -323,7 +327,8 @@ float actualPower(float desiredPower) {
   Sleep(1.0);
 
   //move back a little bit
-  moveRobotTime(50, 0.35, backward);
+  moveRobotTime(50, 0.37, backward);
+  Sleep(.05);
 
   //put hook facing back
   tread_motor.SetPercent(45);
@@ -334,7 +339,7 @@ float actualPower(float desiredPower) {
   turn(strength, NINETY_DEGREE_TURN, false);
 
   //move back to align with wall
-  moveRobotTime(50, 1.3, backward);
+  moveRobotTime(50, 1.8, backward);
   Sleep(0.5);
 
   /*
@@ -411,13 +416,13 @@ float actualPower(float desiredPower) {
     LCD.SetBackgroundColor(RED);
     LCD.Clear();
     LCD.WriteRC("RED", 6, 8);
-    moveRobotTime(strength, .11, frontLeft);
+    moveRobotTime(strength, .13, frontLeft);
   }
   else {
     LCD.SetBackgroundColor(BLUE);
     LCD.Clear();
     LCD.WriteRC("BLUE", 6, 8);
-    moveRobotTime(strength, .11, frontRight);
+    moveRobotTime(strength, .13, frontRight);
   }
   Sleep(.5);
 
@@ -463,7 +468,7 @@ float actualPower(float desiredPower) {
   */
 
   //move forward to be parallel to lever location
-  moveRobotTime(50, .7, forward);
+  moveRobotTime(50, .55, forward);
   Sleep(.05);
   //more code might need to be added for lever A since it is quite close to the wall
 
@@ -472,20 +477,17 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   // go forward 
-  moveRobotTime(50, 1.9, forward);
-  Sleep(.05);
-
-  // turn approximately 25 degrees to face levers
-  turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+  moveRobotTime(50, 1.45, forward);
   Sleep(.05);
 
   // tread push down on lever
   tread_motor.SetPercent(-60);
   Sleep(2.3);
   tread_motor.SetPercent(0);
+  Sleep(0.2);
 
-  // turn approximately 25 degrees to move hook under lever
-  turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+  // turn approximately 45 degrees to move hook under lever
+  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
   Sleep(.05);
 
   // bring tread down under lever
@@ -493,8 +495,8 @@ float actualPower(float desiredPower) {
   Sleep(0.4);
   tread_motor.SetPercent(0);
 
-  // turn approximately 25 degrees to face levers
-  turn(strength, NINETY_DEGREE_TURN / 3.3, false);
+  // turn approximately 45 degrees to face levers
+  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
 
   // wait five seconds
   Sleep(5.0);
@@ -503,25 +505,25 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(60);
   Sleep(0.9);
   tread_motor.SetPercent(0);
+  Sleep(0.2);
 
-  // turn approximately 25 degrees to move hook under lever
-  turn(strength, NINETY_DEGREE_TURN / 3.3, true);
+  // turn approximately 45 degrees to move hook under lever
+  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
   Sleep(.05);
 
   // bring tread up, it is no longer needed
-  tread_motor.SetPercent(-40);
+  tread_motor.SetPercent(40);
   Sleep(1.5);
   tread_motor.SetPercent(0);
 
-  // turn approximately 50 degrees to align straight again
-  turn(strength, NINETY_DEGREE_TURN / 3.3, false);
-  turn(strength, NINETY_DEGREE_TURN / 3.3, false);
+  // turn approximately 45 degrees to align straight again
+  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
   Sleep(.05);
 
-  //Go back to start
+  //Go to window
 
   //move backward to be approximately in line with humidifier
-  moveRobotTime(50, 1.6, backward);
+  moveRobotTime(50, 1.65, backward);
   Sleep(.05);
 
   //turn to face humidifier
@@ -559,7 +561,7 @@ float actualPower(float desiredPower) {
   //Window
 
   // go forward a little bit
-  moveRobotTime(50, 1.0, forward);
+  moveRobotTime(50, 0.8, forward);
   Sleep(.05);
 
   //turn to face window
@@ -607,7 +609,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move backward to align with wall
-  moveRobotTime(50, 1.2, backward);
+  moveRobotTime(50, 2.0, backward);
   Sleep(.05);
 
   //go forward slightly
@@ -619,7 +621,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go down ramp and hit button
-  moveRobotTime(50, 2.0, forward);
+  moveRobotTime(50, 3.0, forward);
   Sleep(.05);
   moveRobotTime(50, .5, backward);
 
