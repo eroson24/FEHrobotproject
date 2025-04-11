@@ -327,7 +327,7 @@ float actualPower(float desiredPower) {
   Sleep(1.0);
 
   //move back a little bit
-  moveRobotTime(50, 0.37, backward);
+  moveRobotTime(50, 0.41, backward);
   Sleep(.05);
 
   //put hook facing back
@@ -390,7 +390,7 @@ float actualPower(float desiredPower) {
   left_motor.Stop();
   Sleep(.05);
 
-    //move forward so center of robot is over black line
+  //move forward so center of robot is over black line
   moveRobotTime(50, .3, forward);
 */
 
@@ -477,7 +477,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   // go forward 
-  moveRobotTime(50, 1.45, forward);
+  moveRobotTime(50, 0.80, forward);
   Sleep(.05);
 
   // tread push down on lever
@@ -488,7 +488,7 @@ float actualPower(float desiredPower) {
 
   // turn approximately 45 degrees to move hook under lever
   turn(strength, FOURTYFIVE_DEGREE_TURN, true);
-  Sleep(.05);
+  Sleep(.3);
 
   // bring tread down under lever
   tread_motor.SetPercent(-40);
@@ -509,7 +509,7 @@ float actualPower(float desiredPower) {
 
   // turn approximately 45 degrees to move hook under lever
   turn(strength, FOURTYFIVE_DEGREE_TURN, true);
-  Sleep(.05);
+  Sleep(.3);
 
   // bring tread up, it is no longer needed
   tread_motor.SetPercent(40);
@@ -518,7 +518,7 @@ float actualPower(float desiredPower) {
 
   // turn approximately 45 degrees to align straight again
   turn(strength, FOURTYFIVE_DEGREE_TURN, false);
-  Sleep(.05);
+  Sleep(.3);
 
   //Go to window
 
