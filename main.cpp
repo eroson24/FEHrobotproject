@@ -285,7 +285,7 @@ float actualPower(float desiredPower) {
 
   //bring tread motor back up with apple basket
   tread_motor.SetPercent(40);
-  Sleep(0.75);
+  Sleep(0.82);
 
   //keep tread motor running on low power to keep apple basket up
   tread_motor.SetPercent(15);
@@ -327,7 +327,7 @@ float actualPower(float desiredPower) {
   Sleep(1.0);
 
   //move back a little bit
-  moveRobotTime(50, 0.41, backward);
+  moveRobotTime(50, 0.42, backward);
   Sleep(.05);
 
   //put hook facing back
@@ -411,6 +411,8 @@ float actualPower(float desiredPower) {
 
   //move to be in line with correct button, display color to press on screen
    
+  bool isBlue = false;
+
   if (CdSAvg <= RED_VALUE)
   {
     LCD.SetBackgroundColor(RED);
@@ -423,6 +425,7 @@ float actualPower(float desiredPower) {
     LCD.Clear();
     LCD.WriteRC("BLUE", 6, 8);
     moveRobotTime(strength, .13, frontRight);
+    isBlue = true;
   }
   Sleep(.5);
 
@@ -432,52 +435,57 @@ float actualPower(float desiredPower) {
 
   //Fertilizer Levers
 
-  /*
+  // BEGINNING OF COMMENT
   // Get lever from the RCS
   int lever = RCS.GetLever();
   float backToLeverTime = 0;
      
   // Check which lever to flip and display letter to screen
-  if(lever == 0)
+  int leverBuffer = 0;
+  if (lever == 0)
   {
-    backToLeverTime = .5;
+    backToLeverTime = 0.35;
     LCD.SetBackgroundColor(CORNFLOWERBLUE);
     LCD.Clear();
     LCD.WriteRC("A", 6, 8);
+    leverBuffer = 0.66;
   } 
-  else if(lever == 1)
+  else if (lever == 1)
   {
-    backToLeverTime = 1.0;
+    backToLeverTime = 0.45;
     LCD.SetBackgroundColor(FORESTGREEN);
     LCD.Clear();
     LCD.WriteRC("B", 6, 8);
+    leverBuffer = 0.76;
   }
-  else if(lever == 2)
+  else if (lever == 2)
   {
-    backToLeverTime = 1.5;
+    backToLeverTime = 0.55;
     LCD.SetBackgroundColor(PURPLE);
     LCD.Clear();
     LCD.WriteRC("C", 6, 8);
+    leverBuffer = 0.86;
   }
   Sleep(.2);
   
 
   //move back to be parallel to correct lever location
-  moveRobotTime(50, backToLeverTime, backward);
+  moveRobotTime(50, backToLeverTime, forward);
   Sleep(.05);
-  */
 
-  //move forward to be parallel to lever location
-  moveRobotTime(50, .55, forward);
-  Sleep(.05);
-  //more code might need to be added for lever A since it is quite close to the wall
+  // END OF COMMENT
 
   //face levers
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
 
   // go forward 
-  moveRobotTime(50, 0.80, forward);
+  int blueBuffer = 0;
+  if (isBlue) {
+  blueBuffer = 0.1;
+  }
+  
+  moveRobotTime(50, blueBuffer + leverBuffer, forward);
   Sleep(.05);
 
   // tread push down on lever
@@ -496,14 +504,14 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
 
   // turn approximately 45 degrees to face levers
-  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
+  turn(strength, FOURTYFIVE_DEGREE_TURN * 0.7, false);
 
   // wait five seconds
   Sleep(5.0);
 
   // bring tread up to pull up lever
   tread_motor.SetPercent(60);
-  Sleep(0.9);
+  Sleep(0.7);
   tread_motor.SetPercent(0);
   Sleep(0.2);
 
@@ -523,7 +531,7 @@ float actualPower(float desiredPower) {
   //Go to window
 
   //move backward to be approximately in line with humidifier
-  moveRobotTime(50, 1.65, backward);
+  moveRobotTime(50, 1.4, backward);
   Sleep(.05);
 
   //turn to face humidifier
@@ -531,7 +539,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to back wall to align robot straight
-  moveRobotTime(50, 1.5, backward);
+  moveRobotTime(50, 2.5, backward);
   Sleep(.05);
 
   //move forward a little bit
@@ -555,7 +563,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move back to align with wall
-  moveRobotTime(50, 1.3, backward);
+  moveRobotTime(50, 2.0, backward);
   Sleep(0.5);
 
   //Window
@@ -621,9 +629,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go down ramp and hit button
-  moveRobotTime(50, 3.0, forward);
-  Sleep(.05);
-  moveRobotTime(50, .5, backward);
+  moveRobot(50, forward);
 
   //done; Woo-Hoo!!!
 
