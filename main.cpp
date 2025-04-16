@@ -335,6 +335,15 @@ float actualPower(float desiredPower) {
   Sleep(2.0);
   tread_motor.SetPercent(0);
 
+  //go forward and to the right a little to align with table 
+  //to ensure CdS cell consistency
+  moveRobotTime(50, 0.5, frontRight);
+  Sleep(.05);
+  
+  //move back a little bit
+  moveRobotTime(50, 0.42, backward);
+  Sleep(.05);
+
   //rotate 90 degrees counterclockwise
   turn(strength, NINETY_DEGREE_TURN, false);
 
@@ -441,33 +450,25 @@ float actualPower(float desiredPower) {
   float backToLeverTime = 0;
      
   // Check which lever to flip and display letter to screen
-  int leverBuffer = 0;
-  if (lever == 0)
-  {
-    backToLeverTime = 0.35;
-    LCD.SetBackgroundColor(CORNFLOWERBLUE);
-    LCD.Clear();
-    LCD.WriteRC("A", 6, 8);
-    leverBuffer = 0.66;
-  } 
-  else if (lever == 1)
+  bool leverBuffer;
+  if (lever == 1)
   {
     backToLeverTime = 0.45;
     LCD.SetBackgroundColor(FORESTGREEN);
     LCD.Clear();
     LCD.WriteRC("B", 6, 8);
-    leverBuffer = 0.76;
+    leverBuffer = false;
   }
-  else if (lever == 2)
+  else
   {
     backToLeverTime = 0.55;
     LCD.SetBackgroundColor(PURPLE);
     LCD.Clear();
     LCD.WriteRC("C", 6, 8);
-    leverBuffer = 0.86;
+    leverBuffer = true;
   }
+
   Sleep(.2);
-  
 
   //move back to be parallel to correct lever location
   moveRobotTime(50, backToLeverTime, forward);
@@ -478,15 +479,17 @@ float actualPower(float desiredPower) {
   //face levers
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
-
-  // go forward 
-  int blueBuffer = 0;
-  if (isBlue) {
-  blueBuffer = 0.1;
-  }
   
-  moveRobotTime(50, blueBuffer + leverBuffer, forward);
-  Sleep(.05);
+  // go forward
+  if (isBlue && leverBuffer) {
+    moveRobotTime(50, 0.5, forward);
+  } else if (isBlue && !leverBuffer) {
+    moveRobotTime(50, 0.4, forward);
+  } else if (!isBlue && leverBuffer) {
+    moveRobotTime(50, 0.4, forward);
+  } else {
+    moveRobotTime(50, 0.5, forward);  
+  }
 
   // tread push down on lever
   tread_motor.SetPercent(-60);
