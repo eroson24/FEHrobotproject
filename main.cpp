@@ -158,7 +158,7 @@ float actualPower(float desiredPower) {
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     const float MAXGRAYFLOOR = 3.3;
     
-    char CourseLetter = RCS.CurrentRegionLetter();
+    char courseLetter = RCS.CurrentRegionLetter();
     char forward[] = "forward";
     char backward[] = "backward";
     char backRight[] = "backRight";
@@ -193,7 +193,11 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to be in line with bin grips
+  if (courseLetter == 'F') {
+    moveRobotTime(50, 1.25, forward);
+  } else {
   moveRobotTime(50, 1.32, forward);
+  }
   Sleep(.05);
 
   //turn to face bin
@@ -314,7 +318,7 @@ float actualPower(float desiredPower) {
 
   //turn slightly to the right
   // accounts for if the robot is on course B, turns more.
-  if (!CourseLetter == 'B') {
+  if (!courseLetter == 'B') {
   turn(strength, 0.13, true);
   Sleep(.05);
 } else {
@@ -348,11 +352,11 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go forward again to hit table
-  moveRobotTime(50, 0.8, forward);
+  moveRobotTime(50, 1.2, forward);
   Sleep(.05);
   
   //move back a little bit
-  moveRobotTime(50, 0.5, backward);
+  moveRobotTime(50, 0.56, backward);
   Sleep(.05);
 
   //rotate 90 degrees counterclockwise
@@ -361,30 +365,6 @@ float actualPower(float desiredPower) {
   //move back to align with wall
   moveRobotTime(50, 1.4, backward);
   Sleep(0.5);
-
-  /*
-  //Apple Bucket Crate
-
-  //move back left to be in line with crate
-  moveRobotTime(50, 0.8, backLeft);
-  Sleep(.05);
-
-  //move forward to crate
-  moveRobotTime(50, 3.2, Forward);
-  Sleep(.05);
-
-  // back up a little bit
-  moveRobotTime(50, 0.2, Backward);
-
-  // use tread to put apple basket down on crate
-  tread_motor.SetPercent(-20);
-  Sleep(2.8);
-  tread_motor.SetPercent(0);
-   
-  // go backwards slightly
-  moveRobotTime(50, .3, Backward);
-  Sleep(0.1);
-*/
 
   //Humidifier
 
@@ -474,7 +454,7 @@ float actualPower(float desiredPower) {
   //if lever is A or C
   else
   {
-    backToLeverTime = 0.55;
+    backToLeverTime = 0.47;
     LCD.SetBackgroundColor(PURPLE);
     LCD.Clear();
     LCD.WriteRC("C", 6, 8);
@@ -505,7 +485,7 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, .86, forward);
   //if the button is red and lever is B
   } else {
-    moveRobotTime(50, .56, forward);  
+    moveRobotTime(50, .50, forward);  
   }
 
   // tread push down on lever
@@ -514,20 +494,11 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
   Sleep(0.2);
 
-  // turn approximately 45 degrees to move hook under lever
-  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
-  Sleep(.3);
-
-  // bring tread down under lever
-  tread_motor.SetPercent(-40);
-  Sleep(0.4);
-  tread_motor.SetPercent(0);
-
   // turn approximately 45 degrees to face levers
-  turn(strength, FOURTYFIVE_DEGREE_TURN * 0.8, false);
+  turn(strength, 0.15, false);
 
   // wait five seconds
-  Sleep(5.0);
+  Sleep(5.1);
 
   // bring tread up to pull up lever
   tread_motor.SetPercent(60);
@@ -535,18 +506,18 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
   Sleep(0.2);
 
-  // turn approximately 45 degrees to move hook under lever
-  turn(strength, FOURTYFIVE_DEGREE_TURN, true);
-  Sleep(.3);
+  // turn right a little then left
+  turn(strength, 0.15, true);
+  Sleep(0.3);
 
   // bring tread up, it is no longer needed
   tread_motor.SetPercent(40);
   Sleep(1.5);
   tread_motor.SetPercent(0);
 
-  // turn approximately 45 degrees to align straight again
-  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
-  Sleep(.3);
+  // turn left after
+  turn(strength, 0.15, false);
+  Sleep(.05);
 
   //Go to window
 
@@ -555,12 +526,12 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, 1.4, backward);
     Sleep(.05);
   } else {
-    moveRobotTime(50, 1.0, backward);
+    moveRobotTime(50, 1.3, backward);
     Sleep(.05);
   }
 
   //turn to face humidifier
-  turn(strength, NINETY_DEGREE_TURN, false);
+  turn(strength, NINETY_DEGREE_TURN * 0.8, false);
   Sleep(.05);
 
   //move to back wall to align robot straight
