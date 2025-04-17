@@ -158,6 +158,7 @@ float actualPower(float desiredPower) {
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
     const float MAXGRAYFLOOR = 3.3;
     
+    char CourseLetter = RCS.CurrentRegionLetter();
     char forward[] = "forward";
     char backward[] = "backward";
     char backRight[] = "backRight";
@@ -312,8 +313,14 @@ float actualPower(float desiredPower) {
   left_motor.SetPercent(0);
 
   //turn slightly to the right
+  // accounts for if the robot is on course B, turns more.
+  if (!CourseLetter == 'B') {
   turn(strength, 0.13, true);
   Sleep(.05);
+} else {
+  turn(strength, 0.18, true);
+  Sleep(0.05);
+}
 
   //be straight on table
   moveRobotTime(50, 0.5, forward);
@@ -337,11 +344,11 @@ float actualPower(float desiredPower) {
 
   //go forward and to the right a little to align with table 
   //to ensure CdS cell consistency
-  moveRobotTime(50, 0.2, frontRight);
+  moveRobotTime(50, 0.25, frontRight);
   Sleep(.05);
 
   //go forward again to hit table
-  moveRobotTime(50, 0.6, forward);
+  moveRobotTime(50, 0.8, forward);
   Sleep(.05);
   
   //move back a little bit
@@ -352,7 +359,7 @@ float actualPower(float desiredPower) {
   turn(strength, NINETY_DEGREE_TURN, false);
 
   //move back to align with wall
-  moveRobotTime(50, 1.8, backward);
+  moveRobotTime(50, 1.4, backward);
   Sleep(0.5);
 
   /*
@@ -431,13 +438,13 @@ float actualPower(float desiredPower) {
     LCD.SetBackgroundColor(RED);
     LCD.Clear();
     LCD.WriteRC("RED", 6, 8);
-    moveRobotTime(strength, .13, frontLeft);
+    moveRobotTime(strength, .11, frontLeft);
   }
   else {
     LCD.SetBackgroundColor(BLUE);
     LCD.Clear();
     LCD.WriteRC("BLUE", 6, 8);
-    moveRobotTime(strength, .13, frontRight);
+    moveRobotTime(strength, .11, frontRight);
     isBlue = true;
   }
   Sleep(.5);
@@ -458,7 +465,7 @@ float actualPower(float desiredPower) {
   // if lever is B
   if (lever == 1)
   {
-    backToLeverTime = 0.35;
+    backToLeverTime = 0.22;
     LCD.SetBackgroundColor(FORESTGREEN);
     LCD.Clear();
     LCD.WriteRC("B", 6, 8);
@@ -489,16 +496,16 @@ float actualPower(float desiredPower) {
   // go forward
   //if the button is blue and lever is A or C
   if (isBlue && leverIsAC) {
-    moveRobotTime(50, 1.0, forward);
+    moveRobotTime(50, 1.1, forward);
   //if the button is blue and lever is B
   } else if (isBlue && !leverIsAC) {
-    moveRobotTime(50, .66, forward);
+    moveRobotTime(50, .9, forward);
   //if the button is red and lever is A or C
   } else if (!isBlue && leverIsAC) {
     moveRobotTime(50, .86, forward);
   //if the button is red and lever is B
   } else {
-    moveRobotTime(50, .5, forward);  
+    moveRobotTime(50, .56, forward);  
   }
 
   // tread push down on lever
@@ -517,7 +524,7 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
 
   // turn approximately 45 degrees to face levers
-  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
+  turn(strength, FOURTYFIVE_DEGREE_TURN * 0.8, false);
 
   // wait five seconds
   Sleep(5.0);
@@ -544,15 +551,20 @@ float actualPower(float desiredPower) {
   //Go to window
 
   //move backward to be approximately in line with humidifier
-  moveRobotTime(50, 1.4, backward);
-  Sleep(.05);
+  if (leverIsAC) {
+    moveRobotTime(50, 1.4, backward);
+    Sleep(.05);
+  } else {
+    moveRobotTime(50, 1.0, backward);
+    Sleep(.05);
+  }
 
   //turn to face humidifier
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
 
   //move to back wall to align robot straight
-  moveRobotTime(50, 2.5, backward);
+  moveRobotTime(50, 3.0, backward);
   Sleep(.05);
 
   //move forward a little bit
