@@ -312,7 +312,7 @@ float actualPower(float desiredPower) {
   left_motor.SetPercent(0);
 
   //turn slightly to the right
-  turn(strength, NINETY_DEGREE_TURN * (1.9 / 9.0), true);
+  turn(strength, 0.13, true);
   Sleep(.05);
 
   //be straight on table
@@ -345,7 +345,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
   
   //move back a little bit
-  moveRobotTime(50, 0.42, backward);
+  moveRobotTime(50, 0.5, backward);
   Sleep(.05);
 
   //rotate 90 degrees counterclockwise
@@ -381,7 +381,7 @@ float actualPower(float desiredPower) {
 
   //Humidifier
 
-  //go foward to cds cell
+  //go forward to cds cell
   moveRobotTime(50, 1.85, forward);
   Sleep(.05);
 
@@ -458,7 +458,7 @@ float actualPower(float desiredPower) {
   // if lever is B
   if (lever == 1)
   {
-    backToLeverTime = 0.4;
+    backToLeverTime = 0.35;
     LCD.SetBackgroundColor(FORESTGREEN);
     LCD.Clear();
     LCD.WriteRC("B", 6, 8);
@@ -492,13 +492,13 @@ float actualPower(float desiredPower) {
     moveRobotTime(50, 1.0, forward);
   //if the button is blue and lever is B
   } else if (isBlue && !leverIsAC) {
-    moveRobotTime(50, .86, forward);
+    moveRobotTime(50, .66, forward);
   //if the button is red and lever is A or C
   } else if (!isBlue && leverIsAC) {
     moveRobotTime(50, .86, forward);
   //if the button is red and lever is B
   } else {
-    moveRobotTime(50, .7, forward);  
+    moveRobotTime(50, .5, forward);  
   }
 
   // tread push down on lever
@@ -517,7 +517,7 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(0);
 
   // turn approximately 45 degrees to face levers
-  turn(strength, FOURTYFIVE_DEGREE_TURN * 0.7, false);
+  turn(strength, FOURTYFIVE_DEGREE_TURN, false);
 
   // wait five seconds
   Sleep(5.0);
@@ -564,7 +564,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go to table
-  moveRobotTime(50, 1.0, forward);
+  moveRobotTime(50, 2.0, forward);
   Sleep(.05);
 
   //move back a little bit
@@ -641,11 +641,13 @@ float actualPower(float desiredPower) {
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
 
-  //go down ramp and hit button
-  moveRobot(50, forward);
+  //until program ends, go straight and go back right every once in a while
+  while (true) {
+    moveRobotTime(50, 5.0, forward);
+    moveRobotTime(50, 0.5, backRight);
+  }
 
   //done; Woo-Hoo!!!
 
   return 0;
-  
 }
