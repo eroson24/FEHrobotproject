@@ -192,7 +192,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move to be in line with bin grips
-  moveRobotTime(50, 1.35, forward);
+  moveRobotTime(50, 1.32, forward);
   Sleep(.05);
 
   //turn to face bin
@@ -337,7 +337,11 @@ float actualPower(float desiredPower) {
 
   //go forward and to the right a little to align with table 
   //to ensure CdS cell consistency
-  moveRobotTime(50, 0.5, frontRight);
+  moveRobotTime(50, 0.2, frontRight);
+  Sleep(.05);
+
+  //go forward again to hit table
+  moveRobotTime(50, 0.6, forward);
   Sleep(.05);
   
   //move back a little bit
@@ -450,22 +454,24 @@ float actualPower(float desiredPower) {
   float backToLeverTime = 0;
      
   // Check which lever to flip and display letter to screen
-  bool leverBuffer;
+  bool leverIsAC;
+  // if lever is B
   if (lever == 1)
   {
-    backToLeverTime = 0.45;
+    backToLeverTime = 0.4;
     LCD.SetBackgroundColor(FORESTGREEN);
     LCD.Clear();
     LCD.WriteRC("B", 6, 8);
-    leverBuffer = false;
+    leverIsAC = false;
   }
+  //if lever is A or C
   else
   {
     backToLeverTime = 0.55;
     LCD.SetBackgroundColor(PURPLE);
     LCD.Clear();
     LCD.WriteRC("C", 6, 8);
-    leverBuffer = true;
+    leverIsAC = true;
   }
 
   Sleep(.2);
@@ -481,19 +487,23 @@ float actualPower(float desiredPower) {
   Sleep(.05);
   
   // go forward
-  if (isBlue && leverBuffer) {
-    moveRobotTime(50, 0.5, forward);
-  } else if (isBlue && !leverBuffer) {
-    moveRobotTime(50, 0.4, forward);
-  } else if (!isBlue && leverBuffer) {
-    moveRobotTime(50, 0.4, forward);
+  //if the button is blue and lever is A or C
+  if (isBlue && leverIsAC) {
+    moveRobotTime(50, 1.0, forward);
+  //if the button is blue and lever is B
+  } else if (isBlue && !leverIsAC) {
+    moveRobotTime(50, .86, forward);
+  //if the button is red and lever is A or C
+  } else if (!isBlue && leverIsAC) {
+    moveRobotTime(50, .86, forward);
+  //if the button is red and lever is B
   } else {
-    moveRobotTime(50, 0.5, forward);  
+    moveRobotTime(50, .7, forward);  
   }
 
   // tread push down on lever
   tread_motor.SetPercent(-60);
-  Sleep(2.3);
+  Sleep(2.9);
   tread_motor.SetPercent(0);
   Sleep(0.2);
 
@@ -616,7 +626,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //move backright from window slightly
-  moveRobotTime(50, .2, backRight);
+  moveRobotTime(50, .8, backRight);
   Sleep(.05);
 
   //move backward to align with wall
@@ -624,7 +634,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
 
   //go forward slightly
-  moveRobotTime(50, .3, forward);
+  moveRobotTime(50, .35, forward);
   Sleep(.05);
 
   //turn to face ramp
