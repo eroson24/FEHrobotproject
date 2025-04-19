@@ -24,18 +24,20 @@
 #include <string.h>
 
 //declare motors.
-FEHMotor tread_motor(FEHMotor::Motor0,9.0);
-FEHMotor right_motor(FEHMotor::Motor1,9.0);
-FEHMotor left_motor(FEHMotor::Motor2,9.0);
-FEHMotor back_motor(FEHMotor::Motor3,9.0);
+FEHMotor tread_motor(FEHMotor::Motor0, 9.0);
+FEHMotor right_motor(FEHMotor::Motor1, 9.0);
+FEHMotor left_motor(FEHMotor::Motor2, 9.0);
+FEHMotor back_motor(FEHMotor::Motor3, 9.0);
 
 //Declare CdS cell sensor
 AnalogInputPin CdS_cell(FEHIO::P3_7);
 
+/*
 // declare optosensors
 AnalogInputPin optosensor_left(FEHIO::P0_0);
 AnalogInputPin optosensor_middle(FEHIO::P0_2);
 AnalogInputPin optosensor_right(FEHIO::P0_7);
+*/
 
 void moveRobotTime(int strength, double time, char direction[]) {
 
@@ -124,16 +126,6 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     }
     return 0;
 }
-
-//function for finding actual power from proteus battery level
-float actualPower(float desiredPower) {
-  float batteryVoltage = Battery.Voltage();
-  if (batteryVoltage > 11.5){
-    batteryVoltage == 11.5;
-  }
-  float actualPower = ((11.5/batteryVoltage) * desiredPower);
-  return actualPower;
-  }
   
   int main(void)
   {
@@ -195,8 +187,11 @@ float actualPower(float desiredPower) {
   //move to be in line with bin grips
   if (courseLetter == 'F') {
     moveRobotTime(50, 1.25, forward);
+  } else if (courseLetter == 'C')
+  {
+    moveRobotTime(50, 1.0, forward); 
   } else {
-  moveRobotTime(50, 1.32, forward);
+  moveRobotTime(50, 1.34, forward);
   }
   Sleep(.05);
 
@@ -356,7 +351,7 @@ float actualPower(float desiredPower) {
   Sleep(.05);
   
   //move back a little bit
-  moveRobotTime(50, 0.56, backward);
+  moveRobotTime(50, 0.58, backward);
   Sleep(.05);
 
   //rotate 90 degrees counterclockwise
@@ -424,7 +419,7 @@ float actualPower(float desiredPower) {
     LCD.SetBackgroundColor(BLUE);
     LCD.Clear();
     LCD.WriteRC("BLUE", 6, 8);
-    moveRobotTime(strength, .11, frontRight);
+    moveRobotTime(strength, .13, frontRight);
     isBlue = true;
   }
   Sleep(.5);
@@ -454,7 +449,7 @@ float actualPower(float desiredPower) {
   //if lever is A or C
   else
   {
-    backToLeverTime = 0.47;
+    backToLeverTime = 0.52;
     LCD.SetBackgroundColor(PURPLE);
     LCD.Clear();
     LCD.WriteRC("C", 6, 8);
@@ -492,10 +487,19 @@ float actualPower(float desiredPower) {
   tread_motor.SetPercent(-60);
   Sleep(2.9);
   tread_motor.SetPercent(0);
+  Sleep(0.5);
+
+  // turn little bit to the right
+  turn(strength, 0.1, true);
   Sleep(0.2);
 
-  // turn approximately 45 degrees to face levers
-  turn(strength, 0.15, false);
+  tread_motor.SetPercent(-60);
+  Sleep(.4);
+  tread_motor.SetPercent(0);
+  Sleep(0.5);
+
+  // turn little bit to the left
+  turn(strength, 0.09, false);
 
   // wait five seconds
   Sleep(5.1);
@@ -523,10 +527,10 @@ float actualPower(float desiredPower) {
 
   //move backward to be approximately in line with humidifier
   if (leverIsAC) {
-    moveRobotTime(50, 1.4, backward);
+    moveRobotTime(50, 1.1, backward);
     Sleep(.05);
   } else {
-    moveRobotTime(50, 1.3, backward);
+    moveRobotTime(50, 1.0, backward);
     Sleep(.05);
   }
 
