@@ -1,10 +1,10 @@
-# FEH Robot Project – Team B8 - Autonomous Course Navigation and Task Execution
+# FEH Robot Project – Team B8.
 
 <img src="/images/robot_cinematic.jpg" alt="A picture of the team's robot with trees in the background." width="600" height="600"/>
 
 ## Overview
 
-This project is the culmination of the ENGR 1282 honors engineering course sequence at tOSU. The team was **Erol Sonmez**, **Reagan Massey**, **Mark Oyster**, and **Austin Toczynski**.
+This project is the culmination of the ENGR 1282 honors engineering course sequence at tOSU. The team was **Erol Sonmez**, **Reagan Massey**, **Mark Oyster**, and **Austin Toczynski**. The robot was designed for the ENGR 1282.01H class in SP25.
 
 Our team's goal was to design, build, and program a robot using the [FEH Proteus Controller](https://u.osu.edu/fehproteus/) to navigate and complete tasks an obstacle course that simulates a robot completing necessary maintenance tasks to maintain a garden.
 
