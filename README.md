@@ -1,6 +1,6 @@
 # FEH Robot Project – Team B8 - Autonomous Course Navigation and Task Execution
 
-![A picture of the team's robot with trees in the background.](/images/robot_cinematic.jpg "Title")
+<img src="/images/robot_cinematic.jpg" alt="A picture of the team's robot with trees in the background." width="800" height="800"/>
 
 ## Overview
 
