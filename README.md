@@ -17,7 +17,7 @@ This is an example of a near perfect run -- a 91/100! The only points missing ar
 
 A picture of the course can be found below.
 
-<img src="/images/robot_courseOverhead.jpg" alt="A picture of the team's robot with trees in the background." width=60% height=60%/>
+<img src="/images/robot_courseOverhead.png" alt="An overhead view of the course the robot navigates." width=60% height=60%/>
 
 Each robot begins in position (1) by pushing the red button when the red light activates. After this, our team's robot completes the task at position (2), which is spinning a compost drum. For bonus points, our team spins the compost drum back to its original position after spinning it all the way. 
 
@@ -33,9 +33,9 @@ Finally, the robot navigated to position (4) to open the window completely, and 
 
 The thing that makes our team's robot the most unique is the hexagonal chassis, as well as the robot having three wheels. By activating any two wheels at any given time to go forward or backwards in any direction, the robot has three different axes of movement, and six different directions it can move in. Below is an initial CAD model of the chassis, as well as a visualization of the six different directions of movement and what each one was named in the code. 
 
-<img src="/images/robot_initialChassis.jpg" alt="An initial CAD model of the team's hegagonal chassis, and the motors that control each of the three wheels." width=60% height=60%/>
+<img src="/images/robot_initialChassis.png" alt="An initial CAD model of the team's hegagonal chassis, and the motors that control each of the three wheels." width=60% height=60%/>
 
-<img src="/images/robot_directions.jpg" alt="A drawing showing the six different directions of movement on three axes on top of a drawing of the robot." width=60% height=60%/>
+<img src="/images/robot_directions.png" alt="A drawing showing the six different directions of movement on three axes on top of a drawing of the robot." width=60% height=60%/>
 
 ## Programming
 
