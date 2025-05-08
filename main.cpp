@@ -6,9 +6,7 @@
 /*      02/14/2025  Version 3.0.1       */
 /****************************************/
 
-/* Include preprocessor directives */
-
-//touch menu key: 0910B8VYV
+//include preprocessor directives
 
 #include <FEHLCD.h>
 #include <FEHIO.h>
@@ -29,11 +27,11 @@ FEHMotor right_motor(FEHMotor::Motor1, 9.0);
 FEHMotor left_motor(FEHMotor::Motor2, 9.0);
 FEHMotor back_motor(FEHMotor::Motor3, 9.0);
 
-//Declare CdS cell sensor
+//declare CdS cell sensor
 AnalogInputPin CdS_cell(FEHIO::P3_7);
 
 /*
-// declare optosensors
+//declare optosensors (UNUSED)
 AnalogInputPin optosensor_left(FEHIO::P0_0);
 AnalogInputPin optosensor_middle(FEHIO::P0_2);
 AnalogInputPin optosensor_right(FEHIO::P0_7);
@@ -41,40 +39,47 @@ AnalogInputPin optosensor_right(FEHIO::P0_7);
 
 void moveRobotTime(int strength, double time, char direction[]) {
 
-  //move forward for time
+  //because the robot has three wheels evenly spaced,
+  //the robot can move in six different directions.
+
+  //move forward for time seconds
   if (strcmp(direction, "forward") == 0){
     right_motor.SetPercent(-strength);
     left_motor.SetPercent(strength);
     Sleep(time);
   }
-  //move back right for time
+
+  //move back right for time seconds
   else if (strcmp(direction, "backRight") == 0){
     right_motor.SetPercent(strength);
     back_motor.SetPercent(-strength);
     Sleep(time);
   }
-  //move back left for time
+  //move back left for time seconds
   else if (strcmp(direction, "backLeft") == 0){
     left_motor.SetPercent(-strength);
     back_motor.SetPercent(strength);
     Sleep(time);
   }
+  //move backwards for time seconds
   else if (strcmp(direction, "backward") == 0){
     right_motor.SetPercent(strength);
     left_motor.SetPercent(-strength);
     Sleep(time);
   }
+  //move forward and to the right for time seconds
   else if (strcmp(direction, "frontRight") == 0){
     back_motor.SetPercent(-strength);
     left_motor.SetPercent(strength);
     Sleep(time);
   }
+  //move forward and to the left for time seconds
   else if (strcmp(direction, "frontLeft") == 0){
     back_motor.SetPercent(strength);
     right_motor.SetPercent(-strength);
     Sleep(time);
   }
-    //Turn off motors
+    //turn off motors
     right_motor.Stop();
     left_motor.Stop();
     back_motor.Stop();
@@ -82,8 +87,9 @@ void moveRobotTime(int strength, double time, char direction[]) {
 }
 
 void moveRobot(int strength, char direction[]) {
+  //identical to the moveRobotTime function, but runs indefinitely.
+  //for use in loops.
 
-  //move forward for time
   if (strcmp(direction, "forward") == 0){
     right_motor.SetPercent(-strength);
     left_motor.SetPercent(strength);
@@ -104,9 +110,7 @@ void moveRobot(int strength, char direction[]) {
   }
 }
 
-//clockwise is true
-// turn function for robot
-int turn(int strengthPercent, double seconds, bool clockwise) {
+void turn(int strengthPercent, double seconds, bool clockwise) {
     if (clockwise) {
         right_motor.SetPercent(strengthPercent);
         left_motor.SetPercent(strengthPercent);
@@ -124,30 +128,32 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
         left_motor.SetPercent(0);
         back_motor.SetPercent(0);
     }
-    return 0;
 }
   
-  int main(void)
-  {
-    // declare light sensor input pin
+int main(void)
+{
+    //declare light sensor input values
     const float RED_VALUE = .1;
     const float BLUE_VALUE = .7;
     
-    //Clear Screen for writing
+    //clear screen for writing
    
     LCD.SetFontColor(WHITE);
     LCD.Clear();
-    
+
+    //initialize RCS connection
     RCS.InitializeTouchMenu("0910B8VYV");
     Sleep(.1);
    
-    // declare constants
+    //declare constants
     float CdS_Value = 10;
     //declare optosensor variables
     float leftOpto = -1, midOpto = -1, rightOpto = -1;
-    //for 25 power
+    //declare turn values
     const float NINETY_DEGREE_TURN = 0.49;
     const float FOURTYFIVE_DEGREE_TURN = 0.5 * NINETY_DEGREE_TURN;
+    //declare max value detected by optosensors (when the floor is gray, typically)
+    //this is used for the optosensors, which are unused in this code. 
     const float MAXGRAYFLOOR = 3.3;
     
     char courseLetter = RCS.CurrentRegionLetter();
@@ -160,9 +166,11 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     float x, y;
     float strength = 70;
     
-  //For tread: positive value is up (clockwise)  
+  //note: for tread: positive value is up (clockwise)  
   
-  //Start
+  /*
+  START!!!
+  */
   
   //wait until red light turns on to start
   while (CdS_Value > RED_VALUE)
@@ -174,7 +182,9 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(20, .5, backward);
   Sleep(.2);
 
-  //Compost Bin
+  /*
+  Compost Bin
+  */
    
   //go forward from start area
   moveRobotTime(50, 1.0, forward);
@@ -254,12 +264,12 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   Sleep(1.5);
   tread_motor.SetPercent(0);
   Sleep(.05);
-
   
-  //Apple Bucket Table
+  /*
+  Apple Bucket Table
+  */
 
-
-  // move a little back left so robot doesn't bump into stump
+  //move a little back left so robot doesn't bump into stump
   moveRobotTime(50, .5, backLeft);
 
   //move away from bin until center is in line with basket
@@ -290,21 +300,21 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   //keep tread motor running on low power to keep apple basket up
   tread_motor.SetPercent(15);
 
-  // go to bottom of ramp
+  //go to bottom of ramp
   moveRobotTime(50, 1.0, backLeft);
   moveRobotTime(50, 3.0, backward);
   Sleep(.05);
 
-  // go slightly forward
+  //go slightly forward
   moveRobotTime(50, 0.2, forward);
   Sleep(.05);
 
-  // turn to face ramp
+  //turn to face ramp
   turn(strength, NINETY_DEGREE_TURN, true);
   Sleep(0.2);
 
-  // go up ramp
-  // give slightly less strength to right motor
+  //go up ramp
+  //give slightly less strength to right motor
   right_motor.SetPercent(-90);
   left_motor.SetPercent(100);
   Sleep(2.5);
@@ -312,7 +322,7 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   left_motor.SetPercent(0);
 
   //turn slightly to the right
-  // accounts for if the robot is on course B, turns more.
+  //if the robot is on course B, turns more.
   if (!courseLetter == 'B') {
   turn(strength, 0.13, true);
   Sleep(.05);
@@ -321,15 +331,14 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   Sleep(0.05);
 }
 
-  //be straight on table
+  //use table to align straight with wall
   moveRobotTime(50, 0.5, forward);
   Sleep(.05);
 
-  // use tread to put apple basket down on table
+  //use tread to put apple basket down on table
   tread_motor.SetPercent(-20);
   Sleep(0.64);
   tread_motor.SetPercent(0);
-
   Sleep(1.0);
 
   //move back a little bit
@@ -361,15 +370,18 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(50, 1.4, backward);
   Sleep(0.5);
 
-  //Humidifier
+  /*
+  Humidifier
+  */
 
-  //go forward to cds cell
+  //go forward to CdS cell
   moveRobotTime(50, 1.85, forward);
   Sleep(.05);
 
   //turn backwards
   turn(strength, NINETY_DEGREE_TURN * 2, true);
   
+  //UNUSED OPTOSENSOR CODE
   /*
   //move backward
   moveRobot(30, backward);
@@ -389,7 +401,7 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(50, .3, forward);
 */
 
-  //takes average of CdS cell values
+  //takes average of 300 CdS cell values
   float CdSAvg = 0;
   for (int i = 0; i < 300; i++){
     CdS_Value = CdS_cell.Value();
@@ -405,9 +417,7 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   Sleep(.5);
 
   //move to be in line with correct button, display color to press on screen
-   
   bool isBlue = false;
-
   if (CdSAvg <= RED_VALUE)
   {
     LCD.SetBackgroundColor(RED);
@@ -428,16 +438,17 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(strength, 2.0, backward);
   Sleep(.2);
 
-  //Fertilizer Levers
+  /*
+  Fertilizer Levers
+  */
 
-  // BEGINNING OF COMMENT
-  // Get lever from the RCS
+  //get lever from the RCS
   int lever = RCS.GetLever();
   float backToLeverTime = 0;
      
-  // Check which lever to flip and display letter to screen
+  //check which lever to flip and display letter to screen
   bool leverIsAC;
-  // if lever is B
+  //if lever is B
   if (lever == 1)
   {
     backToLeverTime = 0.22;
@@ -462,13 +473,11 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(50, backToLeverTime, forward);
   Sleep(.05);
 
-  // END OF COMMENT
-
   //face levers
   turn(strength, NINETY_DEGREE_TURN, false);
   Sleep(.05);
   
-  // go forward
+  //go forward
   //if the button is blue and lever is A or C
   if (isBlue && leverIsAC) {
     moveRobotTime(50, 1.1, forward);
@@ -483,13 +492,13 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
     moveRobotTime(50, .50, forward);  
   }
 
-  // tread push down on lever
+  //tread push down on lever
   tread_motor.SetPercent(-60);
   Sleep(2.9);
   tread_motor.SetPercent(0);
   Sleep(0.5);
 
-  // turn little bit to the right
+  //turn little bit to the right
   turn(strength, 0.1, true);
   Sleep(0.2);
 
@@ -498,33 +507,32 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   tread_motor.SetPercent(0);
   Sleep(0.5);
 
-  // turn little bit to the left
+  //turn little bit to the left
   turn(strength, 0.09, false);
 
-  // wait five seconds
+  //wait five seconds
   Sleep(5.1);
 
-  // bring tread up to pull up lever
+  //bring tread up to pull up lever
   tread_motor.SetPercent(60);
   Sleep(0.7);
   tread_motor.SetPercent(0);
   Sleep(0.2);
 
-  // turn right a little then left
+  //turn right a little then left
   turn(strength, 0.15, true);
   Sleep(0.3);
 
-  // bring tread up, it is no longer needed
+  //bring tread up, it is no longer needed
   tread_motor.SetPercent(40);
   Sleep(1.5);
   tread_motor.SetPercent(0);
 
-  // turn left after
+  //turn left after
   turn(strength, 0.15, false);
   Sleep(.05);
 
-  //Go to window
-
+  //go to window
   //move backward to be approximately in line with humidifier
   if (leverIsAC) {
     moveRobotTime(50, 1.1, backward);
@@ -566,9 +574,11 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   moveRobotTime(50, 2.0, backward);
   Sleep(0.5);
 
-  //Window
+  /*
+  Window
+  */
 
-  // go forward a little bit
+  //go forward a little bit
   moveRobotTime(50, 0.8, forward);
   Sleep(.05);
 
@@ -629,12 +639,12 @@ int turn(int strengthPercent, double seconds, bool clockwise) {
   Sleep(.05);
 
   //until program ends, go straight and go back right every once in a while
+  //this is to hit the button to end the run
   while (true) {
     moveRobotTime(50, 5.0, forward);
     moveRobotTime(50, 0.5, backRight);
   }
 
-  //done; Woo-Hoo!!!
-
+  //done. woo-hoo!!!
   return 0;
 }
