@@ -19,7 +19,7 @@ Our robot’s standout feature is its **hexagonal chassis** and **three-wheel dr
 
 <img src="/images/robot_directions.png" alt="A drawing showing the six different directions of movement on three axes on top of a drawing of the robot." width=60% height=60%/>
 
-The **vertical tread mechanism** was another key innovation, allowing the robot to interact with multiple objects from the same attachment point. A **hook** mounted to the tread allowed the robot to pick up the apple basket, pull levers, and rotate the compost drum. Below you can see the initial and final models. The initial model was scrapped as using the Erector set pieces was too bulky and insecure.
+The **vertical tread mechanism** was another unique point. The tread interfaced very well with the compost bin and was used to rotate it. Additionally, a **hook** mounted to the tread allowed the robot to pick up and put down the apple basket, as well as pull levers. Below you can see the initial and final models. The initial model was scrapped as using the Erector set pieces was too bulky and insecure.
 
 <img src="/images/robot_initialTreads.png" alt="A CAD model of the initial tread design for the robot. The tread is held up using Erector set pieces." width=50% height=51%/>
 
