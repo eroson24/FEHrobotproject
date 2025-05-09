@@ -50,17 +50,17 @@ The robot navigated the course as follows:
 |---------------------------|---------------------------------------------|
 | Start/Stop Button         | Front wheel collision                       |
 | Compost Bin Rotation      | Vertical tread mechanism                    |
-| Apple Basket Pickup       | Hook on tread                               |
+| Apple Basket movement     | Hook on tread                               |
 | Fertilizer Button Press   | CdS cell color detection + wheel press      |
 | Lever Flip                | Hook on tread                               |
 | Window Open/Close         | Side-mounted team plaque                    |
 
 ## Programming & Features 🔧
 
-- **Version Control System**: It was our first experience working on an extensive and collaborative software project, and first time using **GitHub** as a version control system.
-- **Sensors**: Sensors were used in the code, such as a **CdS Cell** to detect color, and **optosensors** for line following. Code was written for optosensor integration, but commented out before the competition as the hardware was faulty. 
-- **Tuning & Calibration**: Extensive real-world testing was used to fine-tune encoder thresholds, light detection, and hook positioning.
-- **Error Checking**: Implemented retry loops and distance checks to recover from small positional errors. We used making the robot run against different objects on the course as a way to standardize position between tasks.
+- 📚 **Version Control System**: It was our first experience working on an extensive and collaborative software project, and first time using **GitHub** as a version control system.
+- 👁️ **Sensors**: Sensors were used in the code, such as a **CdS Cell** to detect color, and **optosensors** for line following. Code was written for optosensor integration, but commented out before the competition as the hardware was faulty. 
+- ⚡ **Tuning & Calibration**: Extensive real-world testing was used to fine-tune encoder thresholds, light detection, and hook positioning.
+- 🔍 **Error Checking**: Implemented retry loops and distance checks to recover from small positional errors. We used making the robot run against different objects on the course as a way to standardize position between tasks.
 
 ## Technologies Used 💻
 - **FEH Proteus Controller** – Motor and sensor interface
