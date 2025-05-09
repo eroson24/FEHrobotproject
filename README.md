@@ -27,9 +27,9 @@ The **vertical tread mechanism** was another key innovation, allowing the robot 
 
 Finally, below is a physical cardboard mockup created in the early phases of the project, as well as a rendering of the final CAD model.
 
-<img src="/images/robot_physicalMockup.jpg" alt="A cardboard model of the robot." width=60% height=60%/>
+<img src="/images/robot_physicalMockup.jpg" alt="A cardboard model of the robot." width=30% height=30%/>
 
-<img src="/images/robot_finalCADrender.png" alt="A CAD model of the final model of the robot, excluding the B8 sign." width=60% height=60%/>
+<img src="/images/robot_finalCADrender.png" alt="A CAD model of the final model of the robot, excluding the B8 sign." width=30% height=30%/>
 
 ## Strategy ♟️
 
