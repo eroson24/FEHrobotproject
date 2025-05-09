@@ -21,15 +21,15 @@ Our robot’s standout feature is its **hexagonal chassis** and **three-wheel dr
 
 The **vertical tread mechanism** was another key innovation, allowing the robot to interact with multiple objects from the same attachment point. A **hook** mounted to the tread allowed the robot to pick up the apple basket, pull levers, and rotate the compost drum. Below you can see the initial and final models. The initial model was scrapped as using the Erector set pieces was too bulky and insecure.
 
-<img src="/images/robot_initialTreads.png" alt="A CAD model of the initial tread design for the robot. The tread is held up using Erector set pieces." width=30% height=30%/>
+<img src="/images/robot_initialTreads.png" alt="A CAD model of the initial tread design for the robot. The tread is held up using Erector set pieces." width=50% height=50%/>
 
-<img src="/images/robot_finalTreads.png" alt="A CAD model of the final tread design for the robot. The tread is held up using two wooden panels at the sides" width=20% height=20%/>
+<img src="/images/robot_finalTreads.png" alt="A CAD model of the final tread design for the robot. The tread is held up using two wooden panels at the sides" width=50% height=50%/>
 
 Finally, below is a physical cardboard mockup created in the early phases of the project, as well as a rendering of the final CAD model.
 
-<img src="/images/robot_physicalMockup.jpg" alt="A cardboard model of the robot." width=30% height=30%/>
+<img src="/images/robot_physicalMockup.jpg" alt="A cardboard model of the robot." width=50% height=50%/>
 
-<img src="/images/robot_finalCADrender.png" alt="A CAD model of the final model of the robot, excluding the B8 sign." width=30% height=30%/>
+<img src="/images/robot_finalCADrender.png" alt="A CAD model of the final model of the robot, excluding the B8 sign." width=50% height=50%/>
 
 ## Strategy ♟️
 
